@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
+using System.Text.Json;
+using System.IO;
 
 namespace EndlessFight.GameStates
 {
@@ -58,6 +60,7 @@ namespace EndlessFight.GameStates
 
         #region Game starting animation
         private bool isPaused;
+        private bool isDie;
         private bool handleMovement;
         private bool showCountdown;
         private float countDownFrequency = 1f;
@@ -173,6 +176,7 @@ namespace EndlessFight.GameStates
                     new(Game1.windowWidth / 2 - size2.X / 2, Game1.windowHeight / 2), Color.White);
             }
 
+
             spriteBatch.End();
         }
 
@@ -183,6 +187,7 @@ namespace EndlessFight.GameStates
             if (keyboardState.IsKeyDown(Keys.Escape))
                 isPaused = true;
 
+           
             if (!isPaused)
             {
                 currentBackground.Update(gameTime);
@@ -206,6 +211,26 @@ namespace EndlessFight.GameStates
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                     isPaused = false;
+            }
+
+
+            if (Player.CurrentLifes <= 0 && !isPaused)
+            {
+                if (!File.Exists("Options.json"))
+                {
+                    File.WriteAllText("Options.json", JsonSerializer.Serialize(new SerializationOptions(ScoreController.Score, ScoreController.Score)));
+                }
+                else
+                {
+                    SerializationOptions serialization = JsonSerializer.Deserialize<SerializationOptions>(File.ReadAllText("Options.json"));
+                    if (ScoreController.Score > serialization.BestScore)
+                    {
+                        serialization.BestScore = ScoreController.Score;
+                    }
+                    serialization.AllScore += ScoreController.Score;
+                    File.WriteAllText("Options.json", JsonSerializer.Serialize(serialization));
+                }
+                isPaused = true;
             }
         }
     }
