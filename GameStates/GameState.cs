@@ -60,7 +60,6 @@ namespace EndlessFight.GameStates
 
         #region Game starting animation
         private bool isPaused;
-        private bool isDie;
         private bool handleMovement;
         private bool showCountdown;
         private float countDownFrequency = 1f;
@@ -213,7 +212,9 @@ namespace EndlessFight.GameStates
                     isPaused = false;
             }
 
-
+            // Сериализация
+            // Если что-то не нравится - просто удалить блок кода
+            // ==================================================
             if (Player.CurrentLifes <= 0 && !isPaused)
             {
                 if (!File.Exists("Options.json"))
@@ -232,6 +233,7 @@ namespace EndlessFight.GameStates
                 }
                 isPaused = true;
             }
+            // ==================================================
         }
     }
 }
