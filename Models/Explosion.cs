@@ -1,10 +1,9 @@
-﻿using EndlessFight.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EndlessFight.Models
 {
-    public class Explosion : IAnimatable
+    public class Explosion 
     {
         public Vector2 Position;
         public SpriteAnimation Animation;

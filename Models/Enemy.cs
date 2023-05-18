@@ -2,16 +2,19 @@
 using EndlessFight.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace EndlessFight.Models
 {
     public enum EnemyType { Alan, Bon, Lips }
 
-    public class Enemy : IMovable, IAnimatable, IHittable
+    public class Enemy : IMovable, IHittable
     {
         public Vector2 Position { get => position; set => position = value; }
         public int Speed { get => speed; set => speed = value; }
         public bool IsAlive { get => isAlive; set => isAlive = value; }
+        public EnemyType EnemyType;
 
         public Rectangle HitBox
             => new((int)position.X, (int)position.Y,
@@ -34,10 +37,12 @@ namespace EndlessFight.Models
         private TextureDescription bulletTexture;
 
         public Enemy(Vector2 spawnPosition, int speed, float shootingInterval,
-            TextureDescription modelTexture, TextureDescription bulletTexture)
+            TextureDescription modelTexture, TextureDescription bulletTexture,
+            EnemyType enemyType)
         {
             this.bulletTexture = bulletTexture;
             this.speed = speed;
+            this.EnemyType = enemyType;
             ShootingInterval = shootingInterval;
             position = spawnPosition;
             animation = new(modelTexture.Texture, modelTexture.Frames, modelTexture.Frames)
@@ -55,7 +60,13 @@ namespace EndlessFight.Models
         public void HandleMovement(GameTime gameTime)
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position.Y += delta * speed;
+            if (EnemyType == EnemyType.Bon && position.Y < Globals.Player.Position.Y)
+            {
+                var direction = Globals.Player.Position - position;
+                direction.Normalize();
+                position += direction * Math.Abs(speed) * delta;
+            } else
+                position.Y += delta * speed;
         }
 
         public void Draw(SpriteBatch spriteBatch) => animation.Draw(spriteBatch);
@@ -64,7 +75,9 @@ namespace EndlessFight.Models
         {
             HandleAnimation(gameTime);
             HandleMovement(gameTime);
-            HandleShooting(gameTime);
+
+            if (EnemyType != EnemyType.Bon)
+                HandleShooting(gameTime);
         }
 
         private void HandleShooting(GameTime gameTime)
@@ -76,7 +89,7 @@ namespace EndlessFight.Models
             {
                 shootingInterval = shootingIntervalBuffer;
 
-                var direction = Globals.Randomizer.Next(10) == 0 
+                var direction = EnemyType == EnemyType.Alan
                     ? Globals.Player.Position - position
                     : new Vector2(0, 1);
                 direction.Normalize();

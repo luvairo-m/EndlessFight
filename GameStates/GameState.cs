@@ -8,12 +8,17 @@ using SpaceBattle.GameStates;
 
 namespace EndlessFight.GameStates
 {
-    /*
-     * Дополнительно
-     * 1. Реализовать меню
-     */
-    internal class GameState : State
+    public class GameState : State
     {
+        /*
+         * 1) Добавить игровое меню
+         * 2) Добавить статистику
+         * 3) Реализовать логику проигрыша
+         * 4) Сделать сохранение игровых данных на жёстком диске
+         * 5) Реализовать выпадение предметов из врагов
+         * 6) Добавить эффект получения урона
+         * 7) Опционально: создать больше анимаций в UI
+         */
         #region Background
         private Background currentBackground;
         private Texture2D backgroundTexture;
@@ -24,7 +29,6 @@ namespace EndlessFight.GameStates
         private Texture2D playerTexture;
         private Texture2D exhaustTexture;
         private Texture2D lifeIconTexture;
-        private const int baseSpeed = 430;
         #endregion
 
         #region Bullets
@@ -43,6 +47,7 @@ namespace EndlessFight.GameStates
         #region Fonts
         private SpriteFont scoreFont;
         private SpriteFont pauseFont;
+        private SpriteFont countDownFont;
         #endregion
 
         #region Enemies and Controller
@@ -51,7 +56,14 @@ namespace EndlessFight.GameStates
         private Texture2D lipsTexture;
         #endregion
 
-        private bool isPaused; 
+        #region Game starting animation
+        private bool isPaused;
+        private bool handleMovement;
+        private bool showCountdown;
+        private float countDownFrequency = 1f;
+        private float countDownBuffer = 1f;
+        private int countDownCounter = 3;
+        #endregion
 
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
             : base(game, contentManager, graphics) { }
@@ -73,6 +85,7 @@ namespace EndlessFight.GameStates
             bonShootTexture = ContentManager.Load<Texture2D>("Enemies/bon-shoot");
             scoreFont = ContentManager.Load<SpriteFont>("Fonts/score-font");
             pauseFont = ContentManager.Load<SpriteFont>("Fonts/pause-font");
+            countDownFont = ContentManager.Load<SpriteFont>("Fonts/countdown-font");
             lifeIconTexture = ContentManager.Load<Texture2D>("UI/life-icon");
             Initialize();
         }
@@ -81,9 +94,9 @@ namespace EndlessFight.GameStates
         {
             var exhaustAnimation = new SpriteAnimation(exhaustTexture, 2, 4) { Scale = 4f };
             currentBackground = new Background(backgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
-            player = new Player(new(Game1.windowWidth / 2 - 40, (int)(Game1.windowHeight / 1.3)), baseSpeed,
+            player = new Player(new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200), Globals.PlayerBaseSpeed,
                 playerTexture, misileTexture, blasterTexture, exhaustAnimation);
-            Globals.Player = player;    
+            Globals.Player = player;
 
             #region Controllers set up
             var explosionTextures = new[]
@@ -91,8 +104,8 @@ namespace EndlessFight.GameStates
                 new TextureDescription(5, sparkleTexture),
                 new TextureDescription(5, explosionTexture)
             };
-            var enemyTextures = new[] 
-            { 
+            var enemyTextures = new[]
+            {
                 new TextureDescription(3, alanTexture),
                 new TextureDescription(3, bonTexture),
                 new TextureDescription(3, lipsTexture)
@@ -115,6 +128,8 @@ namespace EndlessFight.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             currentBackground.Draw(spriteBatch, Graphics.GraphicsDevice);
             player.Draw(spriteBatch);
@@ -124,11 +139,34 @@ namespace EndlessFight.GameStates
             ExplosionContoller.Draw(spriteBatch);
             ScoreController.Draw(spriteBatch);
 
+            if (showCountdown && !isPaused)
+            {
+                countDownFrequency -= delta;
+                if (countDownFrequency <= 0 && countDownCounter != 0)
+                {
+                    countDownCounter--;
+                    countDownFrequency = countDownBuffer;
+                }
+
+                if (countDownCounter == 0)
+                    (showCountdown, handleMovement) = (false, true);
+
+                if (showCountdown)
+                {
+                    var line = countDownCounter.ToString();
+                    var size = countDownFont.MeasureString(line);
+                    spriteBatch.DrawString(countDownFont,
+                        countDownCounter.ToString(), 
+                        new(Game1.windowWidth / 2 - size.X / 2,
+                        (int)(Game1.windowHeight / 2.5) - size.Y / 2), 
+                        Color.White);
+                }
+            }
+
             if (isPaused)
             {
                 var (line1, line2) = ("game is paused", "Press Enter to continue");
-                var (size1, size2) = (pauseFont.MeasureString(line1),  pauseFont.MeasureString(line2));
-
+                var (size1, size2) = (pauseFont.MeasureString(line1), pauseFont.MeasureString(line2));
                 spriteBatch.DrawString(pauseFont, line1,
                     new(Game1.windowWidth / 2 - size1.X / 2, Game1.windowHeight / 2 - 40), Color.White);
                 spriteBatch.DrawString(pauseFont, line2,
@@ -140,19 +178,31 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime)
         {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
-                isPaused = true;    
-                
+                isPaused = true;
+
             if (!isPaused)
             {
                 currentBackground.Update(gameTime);
-                player.Update(gameTime);
-                EnemiesController.Update(gameTime);
-                BulletsController.Update(gameTime);
-                ExplosionContoller.Update(gameTime);
-                LifeController.ControlLifeStatus();
-            } else
+                player.Update(gameTime, handleMovement);
+
+                if (handleMovement)
+                {
+                    EnemiesController.Update(gameTime);
+                    BulletsController.Update(gameTime);
+                    ExplosionContoller.Update(gameTime);
+                    LifeController.ControlLifeStatus();
+                }
+                else if (!showCountdown)
+                {
+                    player.Position += new Vector2(0, -1) * 150 * delta;
+                    if (player.Position.Y <= Game1.windowHeight / 1.3)
+                        showCountdown = true;
+                }
+            }
+            else
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                     isPaused = false;

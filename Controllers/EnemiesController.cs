@@ -18,6 +18,13 @@ namespace EndlessFight.Controllers
         private static float spawnInterval;
         private static float spawnIntefvalBuffer;
 
+        private static Dictionary<EnemyType, int> enemiesCosts = new()
+        {
+            { EnemyType.Lips, 10 },
+            { EnemyType.Bon, 20 },
+            { EnemyType.Alan, 30 }
+        };
+
         public static void Update(GameTime gameTime)
         {
             HandleSpawning(gameTime);
@@ -55,10 +62,12 @@ namespace EndlessFight.Controllers
 
                 for (var i = 0; i < 2; i++)
                 {
-                    var enemy = EnemyBuilder.BuildEnemy((EnemyType)Globals.Randomizer.Next(0, 3),
+                    var enemyType = PickRandomEnemyType();
+                    var enemy = EnemyBuilder.BuildEnemy(enemyType,
                         new(Globals.Randomizer.Next(Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset),
                         Globals.Randomizer.Next(-Game1.windowHeight, -Globals.EnemySpawnOffset)),
-                        Globals.Randomizer.Next(100, 500 + 1), 1.3f);
+                        enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
+                        : Globals.Randomizer.Next(300, 350 + 1), 1.3f);
                     CurrentEnemies.Add(enemy);
                 }
             }
@@ -74,8 +83,16 @@ namespace EndlessFight.Controllers
                         new(enemy.Position.X + enemy.HitBox.Width / 2,
                         enemy.Position.Y + enemy.HitBox.Height / 2));
                     CurrentEnemies.RemoveAt(i);
-                    ScoreController.Score++;
+                    ScoreController.Score += enemiesCosts[enemy.EnemyType];
                 }
+        }
+
+        private static EnemyType PickRandomEnemyType()
+        {
+            var number = Globals.Randomizer.Next(100 + 1);
+            if (number < 80) return EnemyType.Lips;
+            else if (number > 80 && number <= 95) return EnemyType.Bon;
+            else return EnemyType.Alan;
         }
     }
 }

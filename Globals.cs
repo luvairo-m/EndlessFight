@@ -12,6 +12,7 @@ namespace EndlessFight
         public const float ExplosionScale = 3.7f;
         public const int PlayerShipSize = 80;
         public const int EnemySpawnOffset = 100;
+        public const int PlayerBaseSpeed = 430;
         public static Player Player;
     }
 }

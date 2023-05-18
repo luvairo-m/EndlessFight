@@ -6,7 +6,7 @@ namespace EndlessFight.Models
 {
     public enum BulletOwner { Enemy, Player };
 
-    public class Bullet : IMovable, IAnimatable, IHittable
+    public class Bullet : IMovable, IHittable
     {
         public Vector2 Position { get => position; set => position = value; }
         public int Speed { get => speed; set => speed = value; }

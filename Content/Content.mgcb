@@ -133,6 +133,13 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/lips.png
 
+#begin Fonts/countdown-font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/countdown-font.spritefont
+
 #begin Fonts/pause-font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

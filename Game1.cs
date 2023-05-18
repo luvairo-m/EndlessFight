@@ -20,7 +20,7 @@ namespace EndlessFight
         #endregion
 
         #region State
-        private State currentState;
+        private static State currentState;
         #endregion
 
         public Game1()
@@ -56,5 +56,7 @@ namespace EndlessFight
             currentState.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
         }
+
+        public static void ChangeState(State state) => currentState = state;
     }
 }

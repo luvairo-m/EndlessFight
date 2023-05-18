@@ -16,7 +16,9 @@ namespace EndlessFight.Controllers
             {
                 var bullet = CurrentBullets[i];
                 if (bullet.Position.Y < -bullet.HitBox.Height
-                    || CurrentBullets[i].Position.Y > Game1.windowHeight + bullet.HitBox.Height)
+                    || bullet.Position.Y > Game1.windowHeight + bullet.HitBox.Height
+                    || bullet.Position.X < Game1.fieldOffset
+                    || bullet.Position.X > Game1.windowWidth + Game1.fieldOffset)
                     CurrentBullets.RemoveAt(i);
             }
 

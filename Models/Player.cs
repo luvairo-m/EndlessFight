@@ -6,9 +6,9 @@ using System;
 
 namespace EndlessFight.Models
 {
-    public class Player : IMovable, IAnimatable, IHittable
+    public class Player : IMovable, IHittable
     {
-        public int ShootingMultiplier = 3;
+        public int ShootingMultiplier = 2;
         public static int CurrentLifes = 5;
 
         public Vector2 Position { get => position; set => position = value; }
@@ -46,11 +46,15 @@ namespace EndlessFight.Models
             this.missileTexture = missileTexture;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool handleMovement = true)
         {
-            HandleMovement(gameTime);
+            if (handleMovement)
+            {
+                HandleMovement(gameTime);
+                HandleShooting();
+            }
+
             HandleAnimation(gameTime);
-            HandleShooting();
         }
 
         public void Draw(SpriteBatch spriteBatch)
