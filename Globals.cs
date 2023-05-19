@@ -14,5 +14,6 @@ namespace EndlessFight
         public const int EnemySpawnOffset = 100;
         public const int PlayerBaseSpeed = 430;
         public static Player Player;
+        public const string serializationPath = "userdata.json";
     }
 }

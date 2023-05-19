@@ -212,28 +212,10 @@ namespace EndlessFight.GameStates
                     isPaused = false;
             }
 
-            // Сериализация
-            // Если что-то не нравится - просто удалить блок кода
-            // ==================================================
-            if (Player.CurrentLifes <= 0 && !isPaused)
-            {
-                if (!File.Exists("Options.json"))
-                {
-                    File.WriteAllText("Options.json", JsonSerializer.Serialize(new SerializationOptions(ScoreController.Score, ScoreController.Score)));
-                }
-                else
-                {
-                    SerializationOptions serialization = JsonSerializer.Deserialize<SerializationOptions>(File.ReadAllText("Options.json"));
-                    if (ScoreController.Score > serialization.BestScore)
-                    {
-                        serialization.BestScore = ScoreController.Score;
-                    }
-                    serialization.AllScore += ScoreController.Score;
-                    File.WriteAllText("Options.json", JsonSerializer.Serialize(serialization));
-                }
-                isPaused = true;
-            }
-            // ==================================================
+            //if (Player.CurrentLifes <= 0 && !isPaused)
+            //{
+            //    SerializationController.MakeSerialization();
+            //}
         }
     }
 }
