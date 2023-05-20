@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
 
 namespace EndlessFight.Controllers
 {
@@ -16,7 +17,8 @@ namespace EndlessFight.Controllers
         public static readonly List<Enemy> CurrentEnemies = new();
 
         private static float spawnInterval;
-        private static float spawnIntefvalBuffer;
+        public static float spawnIntefvalBuffer;
+        private static float difficultyInterval = 0;
 
         private static Dictionary<EnemyType, int> enemiesCosts = new()
         {
@@ -29,6 +31,7 @@ namespace EndlessFight.Controllers
         {
             HandleSpawning(gameTime);
             HandleCollision();
+            HandleDifficulty(gameTime);
 
             CurrentEnemies.ForEach(enemy => enemy.Update(gameTime));
             for (var i = 0; i < CurrentEnemies.Count; i++)
@@ -60,16 +63,31 @@ namespace EndlessFight.Controllers
             {
                 spawnInterval = spawnIntefvalBuffer;
 
-                for (var i = 0; i < 2; i++)
-                {
-                    var enemyType = PickRandomEnemyType();
-                    var enemy = EnemyBuilder.BuildEnemy(enemyType,
-                        new(Globals.Randomizer.Next(Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset),
-                        Globals.Randomizer.Next(-Game1.windowHeight, -Globals.EnemySpawnOffset)),
-                        enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
-                        : Globals.Randomizer.Next(300, 350 + 1), 1.3f);
-                    CurrentEnemies.Add(enemy);
-                }
+                var enemyType = PickRandomEnemyType();
+                var enemy = EnemyBuilder.BuildEnemy(enemyType,
+                    CurrentEnemies.Count == 0 ? new(Globals.Randomizer.Next(Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset) 
+                    : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50, ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset),
+                    enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
+                    : Globals.Randomizer.Next(300, 350 + 1), 1.3f);
+                CurrentEnemies.Add(enemy);
+            }
+        }
+
+        private static int RandomIntWithoutSegment(int left, int right, int inLeft, int inRight)
+        {
+            int rnd = Globals.Randomizer.Next(left, right - (inRight - inLeft));
+            rnd += (rnd > inLeft) ? (inRight - inLeft) : 0;
+            return rnd;
+        }
+
+        private static void HandleDifficulty(GameTime gameTime)
+        {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            difficultyInterval += delta;
+            if (difficultyInterval > Globals.TimeToChengeDifficulty)
+            {
+                difficultyInterval = 0;
+                spawnIntefvalBuffer -= (spawnIntefvalBuffer <= Globals.MaxDifficult) ? 0 : Globals.DeltaDifficultChange;
             }
         }
 

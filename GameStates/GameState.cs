@@ -123,7 +123,7 @@ namespace EndlessFight.GameStates
             ScoreController.ScoreFont = scoreFont;
             EnemyBuilder.EnemyTextures = enemyTextures;
             EnemyBuilder.EnemyBullets = enemyBullets;
-            EnemiesController.SpawnInterval = 2f;
+            EnemiesController.SpawnInterval = 1.8f;
             ExplosionContoller.ExplosionTextures = explosionTextures;
             #endregion
         }

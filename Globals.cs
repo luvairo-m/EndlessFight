@@ -15,5 +15,8 @@ namespace EndlessFight
         public const int PlayerBaseSpeed = 430;
         public static Player Player;
         public const string serializationPath = "userdata.json";
+        public const float TimeToChengeDifficulty = 2;
+        public const float MaxDifficult = 0.5f;
+        public const float DeltaDifficultChange = 0.01f;
     }
 }
