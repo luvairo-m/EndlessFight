@@ -157,14 +157,14 @@ namespace EndlessFight.GameStates
             if (!isPaused)
             {
                 currentBackground.Update(gameTime);
-                player.Update(gameTime);
+                player.Update(gameTime, handleMovement);
 
                 if (handleMovement)
                 {
                     Globals.HitModel.Update(gameTime);
                     EnemiesController.Update(gameTime);
-                    BulletsController.Update(gameTime);
-                    ExplosionContoller.Update(gameTime);
+                    BulletsController.Update();
+                    ExplosionContoller.Update();
                     LifeController.ControlLifeStatus();
                 }
                 else if (!showCountdown)

@@ -4,8 +4,6 @@ using System;
 
 namespace EndlessFight.Models
 {
-    public enum EnemyType { Alan, Bon, Lips }
-
     public abstract class Enemy
     {
         public Rectangle HitBox
@@ -39,7 +37,7 @@ namespace EndlessFight.Models
 
         public void Draw(SpriteBatch spriteBatch) => animation.Draw(spriteBatch);
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             HandleAnimation();
             HandleMovement();

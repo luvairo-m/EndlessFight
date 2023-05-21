@@ -32,21 +32,21 @@ namespace EndlessFight.Models
             this.speed = speed;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            HandleAnimation(gameTime);
-            HandleMovement(gameTime);
+            HandleAnimation();
+            HandleMovement();
         }
 
         public void Draw(SpriteBatch spriteBatch) => animation.Draw(spriteBatch);
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
             animation.Update();
             animation.Position = position;
         }
 
-        public void HandleMovement(GameTime gameTime) =>
+        public void HandleMovement() => 
             position += direction * speed * Globals.ElapsedSeconds;
     }
 }

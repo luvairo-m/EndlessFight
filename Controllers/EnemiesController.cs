@@ -20,7 +20,7 @@ namespace EndlessFight.Controllers
         private static float spawnFrequency;
         private static float difficultyInterval = 0;
 
-        private static GrigoryTimer timer;
+        private static readonly GrigoryTimer timer;
 
         private static readonly Dictionary<Type, int> enemiesCosts = new()
         {
@@ -39,7 +39,7 @@ namespace EndlessFight.Controllers
                     : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50,
                     ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
                 var speed = Globals.Randomizer.Next(300, 350 + 1);
-                var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1.3f);
+                var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1f);
                 CurrentEnemies.Add(enemy);
                 timer.Reset();
             };
@@ -47,11 +47,11 @@ namespace EndlessFight.Controllers
 
         public static void Update(GameTime gameTime)
         {
-            HandleSpawning(gameTime);
+            HandleSpawning();
             HandleCollision();
             HandleDifficulty(gameTime);
 
-            CurrentEnemies.ForEach(enemy => enemy.Update(gameTime));
+            CurrentEnemies.ForEach(enemy => enemy.Update());
             for (var i = 0; i < CurrentEnemies.Count; i++)
                 if (CurrentEnemies[i].Position.Y > Game1.windowHeight + Globals.EnemySpawnOffset)
                     CurrentEnemies.RemoveAt(i);
@@ -73,13 +73,13 @@ namespace EndlessFight.Controllers
                 }
         }
 
-        private static void HandleSpawning(GameTime gameTime) => timer.Update();
+        private static void HandleSpawning() => timer.Update();
 
         private static int RandomIntWithoutSegment(int left, int right, int inLeft, int inRight)
         {
-            int rnd = Globals.Randomizer.Next(left, right - (inRight - inLeft));
-            rnd += (rnd > inLeft) ? (inRight - inLeft) : 0;
-            return rnd;
+            var randomValue = Globals.Randomizer.Next(left, right - (inRight - inLeft));
+            randomValue += (randomValue > inLeft) ? (inRight - inLeft) : 0;
+            return randomValue;
         }
 
         private static void HandleDifficulty(GameTime gameTime)

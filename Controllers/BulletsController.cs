@@ -9,9 +9,9 @@ namespace EndlessFight.Controllers
     {
         public static readonly List<Bullet> CurrentBullets = new();
 
-        public static void Update(GameTime gameTime)
+        public static void Update()
         {
-            CurrentBullets.ForEach(bullet => bullet.Update(gameTime));
+            CurrentBullets.ForEach(bullet => bullet.Update());
             for (var i = 0; i < CurrentBullets.Count; i++)
             {
                 var bullet = CurrentBullets[i];

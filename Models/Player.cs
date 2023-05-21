@@ -40,11 +40,14 @@ namespace EndlessFight.Models
             this.shipTexture = shipTexture;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool handleMovement = true)
         {
-            HandleMovement(gameTime);
-            HandleShooting();
-            HandleAnimation(gameTime);
+            if (handleMovement)
+            {
+                HandleMovement(gameTime);
+                HandleShooting();
+            }
+            HandleAnimation();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -84,7 +87,7 @@ namespace EndlessFight.Models
             else sourceRectangle.X = 16;
         }
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
             exhaustAnimation.Update();
             exhaustAnimation.Position = new(Position.X + Globals.PlayerShipSize / 4,

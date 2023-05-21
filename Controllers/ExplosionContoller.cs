@@ -20,9 +20,9 @@ namespace EndlessFight.Controllers
                 new(explosion.Texture, explosion.Frames, 7) { Scale = Globals.ExplosionScale }));
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Update()
         {
-            CurrentExplosions.ForEach(explosion => explosion.Update(gameTime));
+            CurrentExplosions.ForEach(explosion => explosion.Update());
             ControlExplosions();
         }
 
