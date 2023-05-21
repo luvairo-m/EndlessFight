@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/space-background.png
 
+#begin Buttons/start-button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Buttons/start-button.png
+
 #begin Effects/explosion.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -139,6 +151,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/countdown-font.spritefont
+
+#begin Fonts/name-game-font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/name-game-font.spritefont
 
 #begin Fonts/pause-font.spritefont
 /importer:FontDescriptionImporter
