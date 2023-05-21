@@ -5,22 +5,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
-using System.Text.Json;
-using System.IO;
 
 namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
-        /*
-         * 1) Добавить игровое меню
-         * 2) Добавить статистику
-         * 3) Реализовать логику проигрыша
-         * 4) Сделать сохранение игровых данных на жёстком диске
-         * 5) Реализовать выпадение предметов из врагов
-         * 6) Добавить эффект получения урона
-         * 7) Опционально: создать больше анимаций в UI
-         */
         #region Background
         private Background currentBackground;
         private Texture2D backgroundTexture;
@@ -35,8 +24,6 @@ namespace EndlessFight.GameStates
 
         #region Bullets
         private Texture2D blasterTexture;
-        private Texture2D misileTexture;
-        private Texture2D bonShootTexture;
         private Texture2D lipsShootTexture;
         private Texture2D alanShootTexture;
         #endregion
@@ -76,15 +63,13 @@ namespace EndlessFight.GameStates
             playerTexture = ContentManager.Load<Texture2D>("Player/ship");
             exhaustTexture = ContentManager.Load<Texture2D>("Player/boosters");
             blasterTexture = ContentManager.Load<Texture2D>("Player/power-shoot");
-            misileTexture = ContentManager.Load<Texture2D>("Player/missile");
             alanTexture = ContentManager.Load<Texture2D>("Enemies/alan");
             bonTexture = ContentManager.Load<Texture2D>("Enemies/bon");
             lipsTexture = ContentManager.Load<Texture2D>("Enemies/lips");
             explosionTexture = ContentManager.Load<Texture2D>("Effects/explosion");
             sparkleTexture = ContentManager.Load<Texture2D>("Effects/sparkle");
-            lipsShootTexture = ContentManager.Load<Texture2D>("Enemies/lips-shoot");
-            alanShootTexture = ContentManager.Load<Texture2D>("Enemies/alan-shoot");
-            bonShootTexture = ContentManager.Load<Texture2D>("Enemies/bon-shoot");
+            lipsShootTexture = ContentManager.Load<Texture2D>("Enemies/alan-shoot");
+            alanShootTexture = ContentManager.Load<Texture2D>("Enemies/bon-shoot");
             scoreFont = ContentManager.Load<SpriteFont>("Fonts/score-font");
             pauseFont = ContentManager.Load<SpriteFont>("Fonts/pause-font");
             countDownFont = ContentManager.Load<SpriteFont>("Fonts/countdown-font");
@@ -97,33 +82,21 @@ namespace EndlessFight.GameStates
             var exhaustAnimation = new SpriteAnimation(exhaustTexture, 2, 4) { Scale = 4f };
             currentBackground = new Background(backgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
             player = new Player(new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200), Globals.PlayerBaseSpeed,
-                playerTexture, misileTexture, blasterTexture, exhaustAnimation);
+                playerTexture, blasterTexture, exhaustAnimation);
             Globals.Player = player;
+
+            SetUpEnemies();
 
             #region Controllers set up
             var explosionTextures = new[]
             {
-                new TextureDescription(5, sparkleTexture),
-                new TextureDescription(5, explosionTexture)
-            };
-            var enemyTextures = new[]
-            {
-                new TextureDescription(3, alanTexture),
-                new TextureDescription(3, bonTexture),
-                new TextureDescription(3, lipsTexture)
-            };
-            var enemyBullets = new[]
-            {
-                new TextureDescription(2, alanShootTexture),
-                new TextureDescription(4, bonShootTexture),
-                new TextureDescription(4, lipsShootTexture)
+                new TextureDescription(sparkleTexture, 5),
+                new TextureDescription(explosionTexture, 5)
             };
 
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
-            EnemyBuilder.EnemyTextures = enemyTextures;
-            EnemyBuilder.EnemyBullets = enemyBullets;
-            EnemiesController.SpawnInterval = 1.8f;
+            EnemiesController.SpawnFrequency = 1.8f;
             ExplosionContoller.ExplosionTextures = explosionTextures;
             #endregion
         }
@@ -185,8 +158,7 @@ namespace EndlessFight.GameStates
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
                 isPaused = true;
-
-           
+     
             if (!isPaused)
             {
                 currentBackground.Update(gameTime);
@@ -211,11 +183,15 @@ namespace EndlessFight.GameStates
                 if (keyboardState.IsKeyDown(Keys.Enter))
                     isPaused = false;
             }
+        }
 
-            //if (Player.CurrentLifes <= 0 && !isPaused)
-            //{
-            //    SerializationController.MakeSerialization();
-            //}
+        private void SetUpEnemies()
+        {
+            Alan.SpriteSheet = new(alanTexture, 3);
+            Alan.BulletTexture = new(alanShootTexture, 4);
+            Lips.SpriteSheet = new(lipsTexture, 3);
+            Lips.BulletTexture = new(lipsShootTexture, 2);
+            Bon.SpriteSheet = new(bonTexture, 3);
         }
     }
 }

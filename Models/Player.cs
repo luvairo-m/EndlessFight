@@ -1,12 +1,10 @@
 ﻿using EndlessFight.Controllers;
-using EndlessFight.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace EndlessFight.Models
 {
-    public class Player : IMovable, IHittable
+    public class Player 
     {
         public int ShootingMultiplier = 2;
         public static int CurrentLifes = 5;
@@ -25,9 +23,6 @@ namespace EndlessFight.Models
         private readonly SpriteAnimation exhaustAnimation;
         private readonly Texture2D shipTexture;
 
-        // В разработке
-        private readonly Texture2D missileTexture;
-
         #region Blaster bullet
         private readonly Texture2D blasterTexture;
         #endregion
@@ -35,7 +30,7 @@ namespace EndlessFight.Models
         private bool isShooting;
 
         public Player(Vector2 spawnPosition, int speed, Texture2D shipTexture,
-            Texture2D missileTexture, Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
+            Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
         {
             Position = spawnPosition;
             sourceRectangle = new Rectangle(16, 0, 16, shipTexture.Height);
@@ -43,7 +38,6 @@ namespace EndlessFight.Models
             this.blasterTexture = blasterTexture;
             this.exhaustAnimation = exhaustAnimation;
             this.shipTexture = shipTexture;
-            this.missileTexture = missileTexture;
         }
 
         public void Update(GameTime gameTime, bool handleMovement = true)
@@ -105,13 +99,7 @@ namespace EndlessFight.Models
         {
             var shootType = InputController.GetBulletTypeFromInput();
             if (shootType == BulletType.Blaster) DoBlasterShoot();
-            else if (shootType == BulletType.Rocket) DoRocketShoot();
             else isShooting = false;
-        }
-
-        private void DoRocketShoot()
-        {
-            throw new NotImplementedException();
         }
 
         private void DoBlasterShoot()
