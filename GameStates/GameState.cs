@@ -17,38 +17,27 @@ namespace EndlessFight.GameStates
 
         #region Player
         private Player player;
-        private Texture2D playerTexture;
-        private Texture2D exhaustTexture;
-        private Texture2D lifeIconTexture;
+        private Texture2D playerTexture, exhaustTexture, lifeIconTexture;
         #endregion
 
         #region Bullets
-        private Texture2D blasterTexture;
-        private Texture2D lipsShootTexture;
-        private Texture2D alanShootTexture;
+        private Texture2D blasterTexture, lipsShootTexture, alanShootTexture;
         #endregion
 
         #region Effects
-        private Texture2D explosionTexture;
-        private Texture2D sparkleTexture;
+        private Texture2D explosionTexture, sparkleTexture;
         #endregion
 
         #region Fonts
-        private SpriteFont scoreFont;
-        private SpriteFont pauseFont;
-        private SpriteFont countDownFont;
+        private SpriteFont scoreFont, pauseFont, countDownFont;
         #endregion
 
         #region Enemies and Controller
-        private Texture2D alanTexture;
-        private Texture2D bonTexture;
-        private Texture2D lipsTexture;
+        private Texture2D alanTexture, bonTexture, lipsTexture;
         #endregion
 
         #region Game starting animation
-        private bool isPaused;
-        private bool handleMovement;
-        private bool showCountdown;
+        private bool isPaused, handleMovement, showCountdown;
         private float countDownFrequency = 1f;
         private float countDownBuffer = 1f;
         private int countDownCounter = 3;
@@ -83,7 +72,12 @@ namespace EndlessFight.GameStates
             currentBackground = new Background(backgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
             player = new Player(new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200), Globals.PlayerBaseSpeed,
                 playerTexture, blasterTexture, exhaustAnimation);
+
             Globals.Player = player;
+            Globals.HitModel = new HitModel
+            {
+                BlankTexture = backgroundTexture,
+            };
 
             SetUpEnemies();
 
@@ -104,8 +98,8 @@ namespace EndlessFight.GameStates
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
 
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             currentBackground.Draw(spriteBatch, Graphics.GraphicsDevice);
             player.Draw(spriteBatch);
             LivesController.Draw(spriteBatch);
@@ -113,6 +107,8 @@ namespace EndlessFight.GameStates
             EnemiesController.Draw(spriteBatch);
             ExplosionContoller.Draw(spriteBatch);
             ScoreController.Draw(spriteBatch);
+
+            Globals.HitModel.Draw(spriteBatch);
 
             if (showCountdown && !isPaused)
             {
@@ -148,7 +144,6 @@ namespace EndlessFight.GameStates
                     new(Game1.windowWidth / 2 - size2.X / 2, Game1.windowHeight / 2), Color.White);
             }
 
-
             spriteBatch.End();
         }
 
@@ -166,6 +161,7 @@ namespace EndlessFight.GameStates
 
                 if (handleMovement)
                 {
+                    Globals.HitModel.Update(gameTime);
                     EnemiesController.Update(gameTime);
                     BulletsController.Update(gameTime);
                     ExplosionContoller.Update(gameTime);

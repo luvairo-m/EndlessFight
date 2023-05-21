@@ -22,6 +22,7 @@ namespace EndlessFight.Controllers
                     if (Player.CurrentLifes > 0)
                         Player.CurrentLifes--;
 
+                    Globals.HitModel.SetPulsing();
                     bullet.IsAlive = false;
                 }
         }

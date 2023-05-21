@@ -1,4 +1,5 @@
 ﻿using EndlessFight.Models;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace EndlessFight
@@ -6,6 +7,7 @@ namespace EndlessFight
     public struct Globals
     {
         public static Random Randomizer = new();
+        public static HitModel HitModel;
         public const float BulletScale = 3.5f;
         public const float BlasterScale = 2.5f;
         public const float EnemyScale = 4f;
