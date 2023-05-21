@@ -1,72 +1,47 @@
-﻿using EndlessFight.Controllers;
-using EndlessFight.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace EndlessFight.Models
 {
     public enum EnemyType { Alan, Bon, Lips }
 
-    public class Enemy : IMovable, IHittable
+    public abstract class Enemy
     {
-        public Vector2 Position { get => position; set => position = value; }
-        public int Speed { get => speed; set => speed = value; }
-        public bool IsAlive { get => isAlive; set => isAlive = value; }
-        public EnemyType EnemyType;
+        public float ShootingFrequency
+        {
+            get => shootingFrequency;
+            set => (shootingFrequency, shootingFrequencyBuffer) = (value, value);
+        }
 
         public Rectangle HitBox
-            => new((int)position.X, (int)position.Y,
+            => new((int)Position.X, (int)Position.Y, 
                 (int)(animation.Size.Width * animation.Scale),
                 (int)(animation.Size.Height * animation.Scale));
 
-        public float ShootingInterval
+        #region Fields usable by controllers
+        public abstract Type EnemyType { get; }
+        public Vector2 Position;
+        public bool IsAlive = true;
+        #endregion
+
+        protected Vector2 defaultMovementDirection = new(0, 1);
+        protected int speed;
+        protected float shootingFrequency;
+        protected float shootingFrequencyBuffer;
+        protected SpriteAnimation animation;
+
+        public Enemy(Vector2 spawnPosition, int speed, float shootingFrequency)
         {
-            get => shootingInterval;
-            set => (shootingInterval, shootingIntervalBuffer) = (value, value);
-        }
-
-        private Vector2 position;
-        private int speed;
-        private bool isAlive = true;
-        private SpriteAnimation animation;
-        private float shootingInterval;
-        private float shootingIntervalBuffer;
-
-        private TextureDescription bulletTexture;
-
-        public Enemy(Vector2 spawnPosition, int speed, float shootingInterval,
-            TextureDescription modelTexture, TextureDescription bulletTexture,
-            EnemyType enemyType)
-        {
-            this.bulletTexture = bulletTexture;
+            Position = spawnPosition;
+            ShootingFrequency = shootingFrequency;
             this.speed = speed;
-            this.EnemyType = enemyType;
-            ShootingInterval = shootingInterval;
-            position = spawnPosition;
-            animation = new(modelTexture.Texture, modelTexture.Frames, modelTexture.Frames)
-            {
-                Scale = Globals.EnemyScale
-            };
         }
 
         public void HandleAnimation(GameTime gameTime)
         {
             animation.Update(gameTime);
-            animation.Position = position;
-        }
-
-        public void HandleMovement(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (EnemyType == EnemyType.Bon && position.Y < Globals.Player.Position.Y)
-            {
-                var direction = Globals.Player.Position - position;
-                direction.Normalize();
-                position += direction * Math.Abs(speed) * delta;
-            } else
-                position.Y += delta * speed;
+            animation.Position = Position;
         }
 
         public void Draw(SpriteBatch spriteBatch) => animation.Draw(spriteBatch);
@@ -75,33 +50,10 @@ namespace EndlessFight.Models
         {
             HandleAnimation(gameTime);
             HandleMovement(gameTime);
-
-            if (EnemyType != EnemyType.Bon)
-                HandleShooting(gameTime);
+            HandleShooting(gameTime);
         }
 
-        private void HandleShooting(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            shootingInterval -= delta;
-
-            if (shootingInterval <= 0)
-            {
-                shootingInterval = shootingIntervalBuffer;
-
-                var direction = EnemyType == EnemyType.Alan
-                    ? Globals.Player.Position - position
-                    : new Vector2(0, 1);
-                direction.Normalize();
-
-                BulletsController.CurrentBullets.Add(
-                    new(new(position.X + HitBox.Width / 2
-                    - bulletTexture.FrameWidth * Globals.BulletScale / 2
-                    , position.Y + HitBox.Height), 570, direction,
-                    new(bulletTexture.Texture, bulletTexture.Frames, 3)
-                    { Scale = Globals.BulletScale },
-                    BulletOwner.Enemy));
-            }
-        }
+        public abstract void HandleShooting(GameTime gameTime);
+        public abstract void HandleMovement(GameTime gameTime);
     }
 }

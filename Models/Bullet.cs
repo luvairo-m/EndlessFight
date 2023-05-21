@@ -1,12 +1,11 @@
-﻿using EndlessFight.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EndlessFight.Models
 {
     public enum BulletOwner { Enemy, Player };
 
-    public class Bullet : IMovable, IHittable
+    public class Bullet 
     {
         public Vector2 Position { get => position; set => position = value; }
         public int Speed { get => speed; set => speed = value; }
