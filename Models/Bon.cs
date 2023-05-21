@@ -10,18 +10,18 @@ namespace EndlessFight.Models
         public override Type EnemyType => GetType();
 
         public Bon(Vector2 spawnPosition, int speed, float shootingFrequency)
-            : base(spawnPosition, speed, shootingFrequency) =>
+            : base(spawnPosition, speed, shootingFrequency)
+        {
             animation = new(SpriteSheet.Texture, SpriteSheet.Frames, SpriteSheet.Frames)
             {
                 Scale = Globals.EnemyScale
             };
+            timer.Tick += () => { };
+        }
 
-        public override void HandleShooting(GameTime gameTime) { }
-
-        public override void HandleMovement(GameTime gameTime)
+        public override void HandleMovement()
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector2 movementDirection = defaultMovementDirection;
+            var movementDirection = defaultMovementDirection;
 
             if (Globals.Player.Position.Y > Position.Y)
             {
@@ -29,7 +29,7 @@ namespace EndlessFight.Models
                 movementDirection.Normalize();
             }
 
-            Position += movementDirection * speed * delta;
+            Position += movementDirection * speed * Globals.ElapsedSeconds;
         }
     }
 }

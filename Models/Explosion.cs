@@ -15,12 +15,12 @@ namespace EndlessFight.Models
         }
 
         public void Draw(SpriteBatch spriteBatch) => Animation.Draw(spriteBatch);
-        public void Update(GameTime gameTime) => HandleAnimation(gameTime);
+        public void Update(GameTime gameTime) => HandleAnimation();
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
             Animation.Position = Position;
-            Animation.Update(gameTime);
+            Animation.Update();
         }
     }
 }

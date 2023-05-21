@@ -8,12 +8,6 @@ namespace EndlessFight.Models
 
     public abstract class Enemy
     {
-        public float ShootingFrequency
-        {
-            get => shootingFrequency;
-            set => (shootingFrequency, shootingFrequencyBuffer) = (value, value);
-        }
-
         public Rectangle HitBox
             => new((int)Position.X, (int)Position.Y, 
                 (int)(animation.Size.Width * animation.Scale),
@@ -27,20 +21,19 @@ namespace EndlessFight.Models
 
         protected Vector2 defaultMovementDirection = new(0, 1);
         protected int speed;
-        protected float shootingFrequency;
-        protected float shootingFrequencyBuffer;
         protected SpriteAnimation animation;
+        protected GrigoryTimer timer;
 
         public Enemy(Vector2 spawnPosition, int speed, float shootingFrequency)
         {
             Position = spawnPosition;
-            ShootingFrequency = shootingFrequency;
+            timer = new(shootingFrequency);
             this.speed = speed;
         }
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
-            animation.Update(gameTime);
+            animation.Update();
             animation.Position = Position;
         }
 
@@ -48,12 +41,13 @@ namespace EndlessFight.Models
 
         public void Update(GameTime gameTime)
         {
-            HandleAnimation(gameTime);
-            HandleMovement(gameTime);
-            HandleShooting(gameTime);
+            HandleAnimation();
+            HandleMovement();
+            HandleShooting();
         }
 
-        public abstract void HandleShooting(GameTime gameTime);
-        public abstract void HandleMovement(GameTime gameTime);
+        public void HandleShooting() => timer.Update();
+
+        public abstract void HandleMovement();
     }
 }

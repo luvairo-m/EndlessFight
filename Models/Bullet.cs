@@ -42,14 +42,11 @@ namespace EndlessFight.Models
 
         public void HandleAnimation(GameTime gameTime)
         {
-            animation.Update(gameTime);
+            animation.Update();
             animation.Position = position;
         }
 
-        public void HandleMovement(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += direction * delta * speed;
-        }
+        public void HandleMovement(GameTime gameTime) =>
+            position += direction * speed * Globals.ElapsedSeconds;
     }
 }

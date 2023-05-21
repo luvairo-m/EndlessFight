@@ -20,12 +20,30 @@ namespace EndlessFight.Controllers
         private static float spawnFrequency;
         private static float difficultyInterval = 0;
 
+        private static GrigoryTimer timer;
+
         private static readonly Dictionary<Type, int> enemiesCosts = new()
         {
             { typeof(Lips), 10 },
             { typeof(Bon), 20 },
             { typeof(Alan), 30 }
         };
+
+        static EnemiesController()
+        {
+            timer = new(1.8f);
+            timer.Tick += () =>
+            {
+                var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
+                    (Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
+                    : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50,
+                    ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
+                var speed = Globals.Randomizer.Next(300, 350 + 1);
+                var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1.3f);
+                CurrentEnemies.Add(enemy);
+                timer.Reset();
+            };
+        }
 
         public static void Update(GameTime gameTime)
         {
@@ -55,24 +73,7 @@ namespace EndlessFight.Controllers
                 }
         }
 
-        private static void HandleSpawning(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            spawnFrequency -= delta;
-
-            if (SpawnFrequency <= 0)
-            {
-                spawnFrequency = spawnFrequencyBuffer;
-
-                var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
-                    (Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
-                    : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50, 
-                    ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
-                var speed = Globals.Randomizer.Next(300, 350 + 1);
-                var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1.3f);
-                CurrentEnemies.Add(enemy);
-            }
-        }
+        private static void HandleSpawning(GameTime gameTime) => timer.Update();
 
         private static int RandomIntWithoutSegment(int left, int right, int inLeft, int inRight)
         {

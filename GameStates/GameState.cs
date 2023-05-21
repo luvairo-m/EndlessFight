@@ -90,7 +90,6 @@ namespace EndlessFight.GameStates
 
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
-            EnemiesController.SpawnFrequency = 1.8f;
             ExplosionContoller.ExplosionTextures = explosionTextures;
             #endregion
         }
@@ -149,7 +148,8 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Globals.Update(gameTime);
+
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
                 isPaused = true;
@@ -157,7 +157,7 @@ namespace EndlessFight.GameStates
             if (!isPaused)
             {
                 currentBackground.Update(gameTime);
-                player.Update(gameTime, handleMovement);
+                player.Update(gameTime);
 
                 if (handleMovement)
                 {
@@ -169,7 +169,7 @@ namespace EndlessFight.GameStates
                 }
                 else if (!showCountdown)
                 {
-                    player.Position += new Vector2(0, -1) * 150 * delta;
+                    player.Position += new Vector2(0, -1) * 150 * Globals.ElapsedSeconds;
                     if (player.Position.Y <= Game1.windowHeight / 1.3)
                         showCountdown = true;
                 }
