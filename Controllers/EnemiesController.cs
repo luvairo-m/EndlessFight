@@ -61,22 +61,13 @@ namespace EndlessFight.Controllers
 
             if (SpawnFrequency <= 0)
             {
-                //var enemy = EnemyBuilder.BuildEnemy(enemyType,
-                //    CurrentEnemies.Count == 0 ? new(Globals.Randomizer.Next(Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
-                //    : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50, ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset),
-                //    enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
-                //    : Globals.Randomizer.Next(300, 350 + 1), 1.3f);
-
-                //(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50, ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset),
-                //    enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
-
                 spawnFrequency = spawnFrequencyBuffer;
+
                 var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
                     (Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
                     : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50, 
                     ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
                 var speed = Globals.Randomizer.Next(300, 350 + 1);
-
                 var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1.3f);
                 CurrentEnemies.Add(enemy);
             }
@@ -117,8 +108,8 @@ namespace EndlessFight.Controllers
         private static Type PickRandomEnemyType()
         {
             var number = Globals.Randomizer.Next(100 + 1);
-            if (number < 80) return typeof(Lips);
-            else if (number > 80 && number <= 95) return typeof(Bon);
+            if (number <= 70) return typeof(Lips);
+            else if (number > 70 && number <= 85) return typeof(Bon);
             else return typeof(Alan);
         }
     }

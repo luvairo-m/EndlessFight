@@ -37,13 +37,6 @@ namespace EndlessFight.Models
                     new(BulletTexture.Texture, BulletTexture.Frames, 3)
                     { Scale = Globals.BulletScale }, BulletOwner.Enemy));
             }
-            //var enemyType = PickRandomEnemyType();
-            //var enemy = EnemyBuilder.BuildEnemy(enemyType,
-            //    new(Globals.Randomizer.Next(Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset),
-            //    Globals.Randomizer.Next(-Game1.windowHeight, -Globals.EnemySpawnOffset)),
-            //    enemyType != EnemyType.Bon ? Globals.Randomizer.Next(100, 500 + 1)
-            //    : Globals.Randomizer.Next(300, 350 + 1), 1.3f);
-            //CurrentEnemies.Add(enemy);
         }
 
         public override void HandleMovement(GameTime gameTime)
