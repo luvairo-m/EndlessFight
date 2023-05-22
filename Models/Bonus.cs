@@ -23,7 +23,7 @@ namespace EndlessFight.Models
             Position = spawnPosition;
             animation = new(bonusTexture.Texture, bonusTexture.Frames, bonusTexture.Frames)
             {
-                Scale = 3f
+                Scale = 3.5f
             };
         }
 
