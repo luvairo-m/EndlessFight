@@ -13,12 +13,17 @@ namespace EndlessFight.Controllers
                 foreach (var enemy in enemies)
                 {
                     if (bullet.HitBox.Intersects(enemy.HitBox) && bullet.Owner != BulletOwner.Enemy)
+                    {
+                        AudioController.PlayEffect(AudioController.hit);
                         (bullet.IsAlive, enemy.IsAlive) = (false, false);
+                    }
                 }
 
             foreach (var bullet in bullets)
                 if (bullet.HitBox.Intersects(Globals.Player.HitBox) && bullet.Owner != BulletOwner.Player)
                 {
+                    AudioController.PlayEffect(AudioController.getDamage);
+
                     if (Globals.Player.CurrentLifes > 0)
                         Globals.Player.CurrentLifes--;
 
@@ -28,7 +33,10 @@ namespace EndlessFight.Controllers
 
             foreach (var bonus in BonusesController.CurrentBonuses)
                 if (bonus.HitBox.Intersects(Globals.Player.HitBox))
+                {
+                    AudioController.PlayEffect(AudioController.getItem);
                     bonus.IsAlive = false;
+                }
         }
     }
 }

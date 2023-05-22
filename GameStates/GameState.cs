@@ -1,10 +1,12 @@
 ﻿using EndlessFight.Controllers;
 using EndlessFight.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
+using System;
 
 namespace EndlessFight.GameStates
 {
@@ -48,6 +50,14 @@ namespace EndlessFight.GameStates
         private int countDownCounter = 3;
         #endregion
 
+        #region Audio
+        public SoundEffect mainThemeSound;
+        public SoundEffect shootSound;
+        public SoundEffect hitSound;
+        public SoundEffect getItemSound;
+        public SoundEffect getDamageSound;
+        #endregion
+
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
             : base(game, contentManager, graphics) { }
 
@@ -72,6 +82,11 @@ namespace EndlessFight.GameStates
             lifeIconTexture = ContentManager.Load<Texture2D>("UI/life-icon");
             x2Texture = ContentManager.Load<Texture2D>("Bonuses/x2");
             x3Texture = ContentManager.Load<Texture2D>("Bonuses/x3");
+            mainThemeSound = ContentManager.Load<SoundEffect>("Sounds/mainTheme1");
+            shootSound = ContentManager.Load<SoundEffect>("Sounds/hit2");
+            hitSound = ContentManager.Load<SoundEffect>("Sounds/random");
+            getItemSound = ContentManager.Load<SoundEffect>("Sounds/item2");
+            getDamageSound = ContentManager.Load<SoundEffect>("Sounds/hit");
             Initialize();
         }
 
@@ -108,6 +123,14 @@ namespace EndlessFight.GameStates
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
+
+            AudioController.mainTheme = new Audio(0.5f, "mainTheme", mainThemeSound);
+            AudioController.shoot = new Audio(0.5f, "shoot", shootSound);
+            AudioController.hit = new Audio(0.5f, "hit", hitSound);
+            AudioController.getItem = new Audio(0.9f, "getItem", getItemSound);
+            AudioController.getDamage = new Audio(0.9f, "getDamage", getDamageSound);
+            AudioController.PlayMusic(AudioController.mainTheme);
+
             #endregion
         }
 

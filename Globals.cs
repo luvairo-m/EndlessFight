@@ -20,7 +20,7 @@ namespace EndlessFight
         public const string serializationPath = "userdata.json";
         public const float TimeToChengeDifficulty = 2;
         public const float MaxDifficult = 0.5f;
-        public const float DeltaDifficultChange = 0.01f;
+        public const float DeltaDifficultChange = 1f;
 
         public static void Update(GameTime gameTime) 
             => ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

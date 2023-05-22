@@ -105,6 +105,8 @@ namespace EndlessFight.Models
         {
             if (!isShooting)
             {
+                AudioController.PlayEffect(AudioController.shoot);
+
                 float step = (float)Globals.PlayerShipSize / (ShootingMultiplier * 2);
                 var buffer = Position.X;
 
