@@ -66,6 +66,7 @@ namespace EndlessFight.Controllers
             foreach (var enemy in CurrentEnemies)
                 if (enemy.HitBox.Intersects(Globals.Player.HitBox))
                 {
+                    AudioController.PlayEffect(AudioController.getDamage);
                     enemy.IsAlive = false;
                     if (Globals.Player.CurrentLifes > 0)
                         Globals.Player.CurrentLifes--;

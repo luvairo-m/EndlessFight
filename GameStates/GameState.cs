@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EndlessFight.GameStates
 {
@@ -56,6 +57,9 @@ namespace EndlessFight.GameStates
         public SoundEffect hitSound;
         public SoundEffect getItemSound;
         public SoundEffect getDamageSound;
+        public SoundEffect enemyShootSound;
+        public SoundEffect pauseSound;
+        public SoundEffect allDestroySound;
         #endregion
 
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
@@ -87,6 +91,9 @@ namespace EndlessFight.GameStates
             hitSound = ContentManager.Load<SoundEffect>("Sounds/random");
             getItemSound = ContentManager.Load<SoundEffect>("Sounds/item2");
             getDamageSound = ContentManager.Load<SoundEffect>("Sounds/hit");
+            enemyShootSound = ContentManager.Load<SoundEffect>("Sounds/something1");
+            pauseSound = ContentManager.Load<SoundEffect>("Sounds/mainTheme2");
+            allDestroySound = ContentManager.Load<SoundEffect>("Sounds/shoot1");
             Initialize();
         }
 
@@ -124,12 +131,17 @@ namespace EndlessFight.GameStates
             ScoreController.ScoreFont = scoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
 
-            AudioController.mainTheme = new Audio(0.5f, "mainTheme", mainThemeSound);
-            AudioController.shoot = new Audio(0.5f, "shoot", shootSound);
-            AudioController.hit = new Audio(0.5f, "hit", hitSound);
-            AudioController.getItem = new Audio(0.9f, "getItem", getItemSound);
-            AudioController.getDamage = new Audio(0.9f, "getDamage", getDamageSound);
+            AudioController.mainTheme = new Audio(0.15f, "mainTheme", mainThemeSound);
+            AudioController.shoot = new Audio(0.15f, "shoot", shootSound);
+            AudioController.hit = new Audio(0.15f, "hit", hitSound);
+            AudioController.getItem = new Audio(0.35f, "getItem", getItemSound);
+            AudioController.getDamage = new Audio(0.35f, "getDamage", getDamageSound);
+            AudioController.enemyShoot = new Audio(0.09f, "enemyDamage", enemyShootSound);
+            AudioController.pauseSound = new Audio(0.08f, "pause", pauseSound);
+            AudioController.allDestroy = new Audio(0.4f, "allDestroy", allDestroySound);
             AudioController.PlayMusic(AudioController.mainTheme);
+
+            Globals.enemyShoot = enemyShootSound;
 
             #endregion
         }
@@ -193,7 +205,11 @@ namespace EndlessFight.GameStates
 
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                AudioController.mainTheme.soundEffectInstance.Pause();
+                AudioController.PlayMusic(AudioController.pauseSound);
                 isPaused = true;
+            }
      
             if (!isPaused)
             {
@@ -219,7 +235,11 @@ namespace EndlessFight.GameStates
             else
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    AudioController.pauseSound.soundEffectInstance.Stop();
+                    AudioController.PlayMusic(AudioController.mainTheme);
                     isPaused = false;
+                }
             }
         }
 

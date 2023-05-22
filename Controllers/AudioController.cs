@@ -14,6 +14,9 @@ namespace EndlessFight.Controllers
         public static Audio hit;
         public static Audio getItem;
         public static Audio getDamage;
+        public static Audio enemyShoot;
+        public static Audio pauseSound;
+        public static Audio allDestroy;
 
         public static void PlayMusic(Audio audio)
         {

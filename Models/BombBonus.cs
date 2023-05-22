@@ -8,7 +8,10 @@ namespace EndlessFight.Models
         public BombBonus(Vector2 spawnPosition, TextureDescription bonusTexture)
             : base(spawnPosition, bonusTexture) { }
 
-        public override void OnBonusApplying() =>
+        public override void OnBonusApplying()
+        {
+            AudioController.PlayEffect(AudioController.allDestroy);
             EnemiesController.CurrentEnemies.ForEach(enemy => enemy.IsAlive = false);
+        }
     }
 }
