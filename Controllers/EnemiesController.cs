@@ -67,8 +67,8 @@ namespace EndlessFight.Controllers
                 if (enemy.HitBox.Intersects(Globals.Player.HitBox))
                 {
                     enemy.IsAlive = false;
-                    if (Player.CurrentLifes > 0)
-                        Player.CurrentLifes--;
+                    if (Globals.Player.CurrentLifes > 0)
+                        Globals.Player.CurrentLifes--;
                     Globals.HitModel.SetPulsing();
                 }
         }
@@ -99,11 +99,12 @@ namespace EndlessFight.Controllers
                 if (!CurrentEnemies[i].IsAlive)
                 {
                     var enemy = CurrentEnemies[i];
-                    ExplosionContoller.CreateExplosion(
-                        new(enemy.Position.X + enemy.HitBox.Width / 2,
-                        enemy.Position.Y + enemy.HitBox.Height / 2));
+                    var position = new Vector2(enemy.Position.X + enemy.HitBox.Width / 2 - 10,
+                        enemy.Position.Y + enemy.HitBox.Height / 2 - 10);
+                    ExplosionContoller.CreateExplosion(position);
+                    BonusesController.CreateBonus(position);
                     CurrentEnemies.RemoveAt(i);
-                    ScoreController.Score += enemiesCosts[enemy.EnemyType];
+                    ScoreController.Score += enemiesCosts[enemy.GetType()];
                 }
         }
 

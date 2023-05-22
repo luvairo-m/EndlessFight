@@ -13,7 +13,7 @@ namespace EndlessFight.Controllers
         public static void Draw(SpriteBatch spriteBatch)
         {
             var buffer = iconsSpacing;
-            for (var i = 0; i < Player.CurrentLifes; i++)
+            for (var i = 0; i < Globals.Player.CurrentLifes; i++)
             {
                 spriteBatch.Draw(LifeIconTexture, 
                     new Rectangle(Game1.windowWidth - buffer - iconWidth,

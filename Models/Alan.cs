@@ -1,6 +1,5 @@
 ﻿using EndlessFight.Controllers;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace EndlessFight.Models
 {
@@ -8,8 +7,6 @@ namespace EndlessFight.Models
     {
         public static TextureDescription SpriteSheet;
         public static TextureDescription BulletTexture;
-
-        public override Type EnemyType => GetType();
 
         public Alan(Vector2 spawnPosition, int speed, float shootingFrequency)
             : base(spawnPosition, speed, shootingFrequency)

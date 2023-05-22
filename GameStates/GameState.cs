@@ -32,6 +32,11 @@ namespace EndlessFight.GameStates
         private SpriteFont scoreFont, pauseFont, countDownFont;
         #endregion
 
+        #region Bonuses
+        private Texture2D heartTexture, bombTexture;
+        private Texture2D x2Texture, x3Texture;
+        #endregion
+
         #region Enemies and Controller
         private Texture2D alanTexture, bonTexture, lipsTexture;
         #endregion
@@ -62,7 +67,11 @@ namespace EndlessFight.GameStates
             scoreFont = ContentManager.Load<SpriteFont>("Fonts/score-font");
             pauseFont = ContentManager.Load<SpriteFont>("Fonts/pause-font");
             countDownFont = ContentManager.Load<SpriteFont>("Fonts/countdown-font");
+            bombTexture = ContentManager.Load<Texture2D>("Bonuses/bomb");
+            heartTexture = ContentManager.Load<Texture2D>("Bonuses/golden-heart");
             lifeIconTexture = ContentManager.Load<Texture2D>("UI/life-icon");
+            x2Texture = ContentManager.Load<Texture2D>("Bonuses/x2");
+            x3Texture = ContentManager.Load<Texture2D>("Bonuses/x3");
             Initialize();
         }
 
@@ -76,7 +85,7 @@ namespace EndlessFight.GameStates
             Globals.Player = player;
             Globals.HitModel = new HitModel
             {
-                BlankTexture = backgroundTexture,
+                BlankTexture = backgroundTexture
             };
 
             SetUpEnemies();
@@ -86,6 +95,14 @@ namespace EndlessFight.GameStates
             {
                 new TextureDescription(sparkleTexture, 5),
                 new TextureDescription(explosionTexture, 5)
+            };
+
+            BonusesController.BonusesTextures = new()
+            {
+                { typeof(HeartBonus), new TextureDescription(heartTexture, 2) },
+                { typeof(BombBonus), new TextureDescription(bombTexture, 3) },
+                { typeof(Mult2Bonus), new TextureDescription(x2Texture, 2) },
+                { typeof(Mult3Bonus), new TextureDescription(x3Texture, 2) },
             };
 
             LivesController.LifeIconTexture = lifeIconTexture;
@@ -105,6 +122,7 @@ namespace EndlessFight.GameStates
             BulletsController.Draw(spriteBatch);
             EnemiesController.Draw(spriteBatch);
             ExplosionContoller.Draw(spriteBatch);
+            BonusesController.Draw(spriteBatch);
             ScoreController.Draw(spriteBatch);
 
             Globals.HitModel.Draw(spriteBatch);
@@ -165,6 +183,7 @@ namespace EndlessFight.GameStates
                     EnemiesController.Update(gameTime);
                     BulletsController.Update();
                     ExplosionContoller.Update();
+                    BonusesController.Update();
                     LifeController.ControlLifeStatus();
                 }
                 else if (!showCountdown)

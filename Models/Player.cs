@@ -6,8 +6,8 @@ namespace EndlessFight.Models
 {
     public class Player 
     {
-        public int ShootingMultiplier = 2;
-        public static int CurrentLifes = 5;
+        public int ShootingMultiplier = 1;
+        public int CurrentLifes = 5;
 
         public Vector2 Position { get => position; set => position = value; }
         public Rectangle HitBox => new((int)Position.X, (int)Position.Y,

@@ -13,9 +13,9 @@ namespace EndlessFight
         public const float BulletScale = 3.5f;
         public const float BlasterScale = 2.5f;
         public const float EnemyScale = 4f;
-        public const float ExplosionScale = 3.7f;
+        public const float ExplosionScale = 4.5f;
         public const int PlayerShipSize = 80;
-        public const int EnemySpawnOffset = 100;
+        public const int EnemySpawnOffset = 300;
         public const int PlayerBaseSpeed = 430;
         public const string serializationPath = "userdata.json";
         public const float TimeToChengeDifficulty = 2;

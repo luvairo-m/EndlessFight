@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 
 namespace EndlessFight.Models
 {
     public class Bon : Enemy
     {
         public static TextureDescription SpriteSheet;
-
-        public override Type EnemyType => GetType();
 
         public Bon(Vector2 spawnPosition, int speed, float shootingFrequency)
             : base(spawnPosition, speed, shootingFrequency)

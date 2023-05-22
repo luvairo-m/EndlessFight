@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace EndlessFight.Models
 {
@@ -12,7 +11,6 @@ namespace EndlessFight.Models
                 (int)(animation.Size.Height * animation.Scale));
 
         #region Fields usable by controllers
-        public abstract Type EnemyType { get; }
         public Vector2 Position;
         public bool IsAlive = true;
         #endregion

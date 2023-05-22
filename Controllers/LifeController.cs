@@ -19,12 +19,16 @@ namespace EndlessFight.Controllers
             foreach (var bullet in bullets)
                 if (bullet.HitBox.Intersects(Globals.Player.HitBox) && bullet.Owner != BulletOwner.Player)
                 {
-                    if (Player.CurrentLifes > 0)
-                        Player.CurrentLifes--;
+                    if (Globals.Player.CurrentLifes > 0)
+                        Globals.Player.CurrentLifes--;
 
                     Globals.HitModel.SetPulsing();
                     bullet.IsAlive = false;
                 }
+
+            foreach (var bonus in BonusesController.CurrentBonuses)
+                if (bonus.HitBox.Intersects(Globals.Player.HitBox))
+                    bonus.IsAlive = false;
         }
     }
 }

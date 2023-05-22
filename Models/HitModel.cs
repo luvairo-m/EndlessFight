@@ -48,7 +48,7 @@ namespace EndlessFight.Models
             }
         }
 
-        public void SetPulsing() => 
+        public void SetPulsing() =>
             (goUp, goDown, IsPulsing, pulsingInterval) = (true, false, true, 0);
     }
 }
