@@ -262,6 +262,72 @@
 /processorParam:TextureFormat=Color
 /build:Player/shoot.png
 
+#begin Sounds/hit.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/hit.mp3
+
+#begin Sounds/hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hit2.wav
+
+#begin Sounds/item1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/item1.wav
+
+#begin Sounds/item2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/item2.wav
+
+#begin Sounds/mainTheme1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/mainTheme1.mp3
+
+#begin Sounds/mainTheme2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/mainTheme2.mp3
+
+#begin Sounds/random.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/random.wav
+
+#begin Sounds/shoot1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/shoot1.mp3
+
+#begin Sounds/something1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/something1.mp3
+
+#begin Sounds/something2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/something2.mp3
+
+#begin Sounds/something3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/something3.wav
+
 #begin UI/bars.png
 /importer:TextureImporter
 /processor:TextureProcessor
