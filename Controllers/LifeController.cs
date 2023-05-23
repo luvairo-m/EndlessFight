@@ -28,10 +28,6 @@ namespace EndlessFight.Controllers
                     if (Globals.Player.CurrentLifes > 0)
                         Globals.Player.CurrentLifes--;
 
-                    // УДАЛИТЬ ЭТО!
-                    if (Globals.Player.CurrentLifes == 0)
-                        GameState.IsPaused = true;
-
                     Globals.HitPulsation.Pulse();
                     bullet.IsAlive = false;
                 }
