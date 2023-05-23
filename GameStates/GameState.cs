@@ -244,6 +244,8 @@ namespace EndlessFight.GameStates
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
+                    if (isPaused)
+                        AudioController.PlayEffect(AudioController.pause);
                     AudioController.PlayMusic(AudioController.mainTheme);
                     isPaused = false;
                 }
