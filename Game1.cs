@@ -2,7 +2,6 @@
 using EndlessFight.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using static EndlessFight.Resources;
 
 namespace EndlessFight
@@ -54,7 +53,10 @@ namespace EndlessFight
         protected override void Update(GameTime gameTime)
         {
             Globals.Update(gameTime);
-            currentBackground.Update();
+
+            if (!GameState.IsPaused)
+                currentBackground.Update();
+
             currentState.Update(gameTime);
             base.Update(gameTime);
         }

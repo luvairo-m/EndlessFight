@@ -126,6 +126,7 @@ namespace EndlessFight.GameStates
         public override void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
+
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
                 AudioController.mainTheme.soundEffectInstance.Pause();
