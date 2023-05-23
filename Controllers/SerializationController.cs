@@ -26,10 +26,18 @@ namespace EndlessFight.Controllers
 
         public static int GetBestScore()
         {
-            SerializationOptions serialization = JsonSerializer
+            if (!File.Exists(Globals.SerializationPath))
+            {
+                return 0;
+            }
+            else
+            {
+                SerializationOptions serialization = JsonSerializer
                     .Deserialize<SerializationOptions>(File.ReadAllText(Globals.SerializationPath));
 
-            return serialization.BestScore;
+                return serialization.BestScore;
+            }
+
         }
     }
 }
