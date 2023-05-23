@@ -62,14 +62,12 @@ namespace EndlessFight.Controllers
 
         private static void HandleCollision()
         {
-            foreach (var enemy in CurrentEnemies)
-                if (enemy.HitBox.Intersects(Globals.Player.HitBox))
+            for (var i = 0; i < CurrentEnemies.Count; i++)
+                if (CurrentEnemies[i].HitBox.Intersects(Globals.Player.HitBox))
                 {
                     AudioController.PlayEffect(AudioController.getDamage);
-                    enemy.IsAlive = false;
-                    if (Globals.Player.CurrentLifes > 0)
-                        Globals.Player.CurrentLifes--;
-                    Globals.HitPulsation.Pulse();
+                    CurrentEnemies[i].IsAlive = false;
+                    LifeController.OnPlayerDamaged();
                 }
         }
 

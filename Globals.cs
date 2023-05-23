@@ -7,11 +7,13 @@ namespace EndlessFight
 {
     public struct Globals
     {
-        public static float ElapsedSeconds;
+        public static Game1 MainGame;
         public static Random Randomizer = new();
         public static Pulsation HitPulsation;
         public static Pulsation HealPulsation;
         public static Player Player;
+        public static SoundEffect EnemyShoot;
+        public static float ElapsedSeconds;
         public const float BulletScale = 3.5f;
         public const float BlasterScale = 2.5f;
         public const float EnemyScale = 4f;
@@ -24,7 +26,6 @@ namespace EndlessFight
         public const float MaxDifficult = 0.7f;
         public const float DeltaDifficultChange = 0.01f;
         public const float BonusScale = 3.5f;
-        public static SoundEffect enemyShoot;
 
         public static void Update(GameTime gameTime) 
             => ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

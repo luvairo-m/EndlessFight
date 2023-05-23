@@ -1,12 +1,17 @@
 ﻿using EndlessFight.GameStates;
+using EndlessFight.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceBattle.GameStates;
+
+using static EndlessFight.Resources;
 
 namespace EndlessFight
 {
     public class Game1 : Game
     {
+        private State menuState;
+        private State gameState;
+
         #region Window Size
         public const int windowWidth = 750;
         public const int windowHeight = 900;
@@ -14,17 +19,27 @@ namespace EndlessFight
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Resources gameResources;
 
         #region State
         private static State currentState;
         #endregion
 
+        #region Background
+        private Background currentBackground;
+        #endregion
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            gameResources = new(Content);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            currentState = new MenuState(this, Content, graphics);
+
+            Globals.MainGame = this;
+
+            menuState = new MenuState(this, Content, graphics);
+            gameState = new GameState(this, Content, graphics);
         }
 
         protected override void Initialize()
@@ -38,22 +53,40 @@ namespace EndlessFight
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            gameResources.InitializeResources();
+            currentBackground = new Background(BackgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
+            currentState = menuState;
             currentState.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
             Globals.Update(gameTime);
+
+            if (!GameState.IsPaused)
+                currentBackground.Update();
+
             currentState.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
+
+            currentBackground.Draw(spriteBatch, graphics.GraphicsDevice);
             currentState.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
+
+            spriteBatch.End();
         }
 
-        public void ChangeState(State state) => currentState = state;
+        public void ChangeState()
+        {
+            currentState.OnExit();
+            if (currentState is MenuState) currentState = gameState;
+            else currentState = menuState;
+            currentState.LoadContent();
+        }
     }
 }
