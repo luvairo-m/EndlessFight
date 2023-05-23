@@ -1,5 +1,7 @@
 ﻿using EndlessFight.Controllers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace EndlessFight.Models
 {
@@ -17,6 +19,8 @@ namespace EndlessFight.Models
             };
             timer.Tick += () =>
             {
+                AudioController.PlayEffect(enemySound);
+
                 BulletsController.CurrentBullets.Add(
                     new(new(Position.X + HitBox.Width / 2
                     - BulletTexture.FrameWidth * Globals.BulletScale / 2,

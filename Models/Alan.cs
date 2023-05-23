@@ -17,6 +17,8 @@ namespace EndlessFight.Models
             };
             timer.Tick += () =>
             {
+                AudioController.PlayEffect(enemySound);
+
                 var shootingDirection = Globals.Player.Position - Position;
                 shootingDirection.Normalize();
 

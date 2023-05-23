@@ -1,5 +1,6 @@
 ﻿using EndlessFight.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using System;
 
 namespace EndlessFight
@@ -21,6 +22,7 @@ namespace EndlessFight
         public const float TimeToChengeDifficulty = 2;
         public const float MaxDifficult = 0.5f;
         public const float DeltaDifficultChange = 1f;
+        public static SoundEffect enemyShoot;
 
         public static void Update(GameTime gameTime) 
             => ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

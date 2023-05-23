@@ -34,7 +34,6 @@ namespace EndlessFight.Controllers
             foreach (var bonus in BonusesController.CurrentBonuses)
                 if (bonus.HitBox.Intersects(Globals.Player.HitBox))
                 {
-                    AudioController.PlayEffect(AudioController.getItem);
                     bonus.IsAlive = false;
                 }
         }

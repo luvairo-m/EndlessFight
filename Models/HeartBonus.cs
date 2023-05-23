@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EndlessFight.Controllers;
+using Microsoft.Xna.Framework;
 
 namespace EndlessFight.Models
 {
@@ -9,6 +10,7 @@ namespace EndlessFight.Models
 
         public override void OnBonusApplying()
         {
+            AudioController.PlayEffect(AudioController.getItem);
             var player = Globals.Player;
             if (player.CurrentLifes < 5 && player.CurrentLifes > 0)
                 player.CurrentLifes++;

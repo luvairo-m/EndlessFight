@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EndlessFight.Controllers;
+using Microsoft.Xna.Framework;
 
 namespace EndlessFight.Models
 {
@@ -7,6 +8,10 @@ namespace EndlessFight.Models
         public Mult2Bonus(Vector2 spawnPosition, TextureDescription bonusTexture)
             : base(spawnPosition, bonusTexture) { }
 
-        public override void OnBonusApplying() => Globals.Player.ShootingMultiplier = 2;
+        public override void OnBonusApplying()
+        {
+            AudioController.PlayEffect(AudioController.getItem);
+            Globals.Player.ShootingMultiplier = 2;
+        }
     }
 }
