@@ -3,19 +3,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EndlessFight.Models
 {
-    public class HitModel
+    public class Pulsation
     {
-        public Texture2D BlankTexture;
-
-        private Color color = Color.FromNonPremultiplied(255, 0, 0, 1);
+        private Texture2D blankTexture;
+        private Color pulseColor;
+        private (int r, int g, int b) pusleColorData;
         private float pulsingInterval = 0;
 
         private bool goUp = true;
         private bool goDown;
         private bool IsPulsing;
 
+        public Pulsation((int r, int g, int b) colorData, Texture2D blankTexture)
+        {
+            this.blankTexture = blankTexture;
+            pulseColor = Color.FromNonPremultiplied(colorData.r, colorData.g, colorData.b, 1);
+            pusleColorData = colorData;
+        }
+
         public void Draw(SpriteBatch spriteBatch) =>
-            spriteBatch.Draw(BlankTexture, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight), color);
+            spriteBatch.Draw(blankTexture, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight),
+                pulseColor);
 
         public void Update(GameTime gameTime)
         {
@@ -30,7 +38,7 @@ namespace EndlessFight.Models
                     if (pulsingInterval >= 200)
                         (goUp, goDown) = (false, true);
 
-                    color = Color.FromNonPremultiplied(255, 0, 0, (int)pulsingInterval);
+                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, (int)pulsingInterval);
                 }
                 else if (goDown)
                 {
@@ -43,12 +51,12 @@ namespace EndlessFight.Models
                         IsPulsing = false;
                     }
 
-                    color = Color.FromNonPremultiplied(255, 0, 0, (int)pulsingInterval);
+                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, (int)pulsingInterval);
                 }
             }
         }
 
-        public void SetPulsing() =>
+        public void Pulse() =>
             (goUp, goDown, IsPulsing, pulsingInterval) = (true, false, true, 0);
     }
 }

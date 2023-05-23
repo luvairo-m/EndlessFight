@@ -79,7 +79,7 @@ namespace EndlessFight.Controllers
                     enemy.IsAlive = false;
                     if (Globals.Player.CurrentLifes > 0)
                         Globals.Player.CurrentLifes--;
-                    Globals.HitModel.SetPulsing();
+                    Globals.HitPulsation.Pulse();
                 }
         }
 

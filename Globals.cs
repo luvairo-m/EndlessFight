@@ -9,7 +9,8 @@ namespace EndlessFight
     {
         public static float ElapsedSeconds;
         public static Random Randomizer = new();
-        public static HitModel HitModel;
+        public static Pulsation HitPulsation;
+        public static Pulsation HealPulsation;
         public static Player Player;
         public const float BulletScale = 3.5f;
         public const float BlasterScale = 2.5f;

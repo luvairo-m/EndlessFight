@@ -13,7 +13,10 @@ namespace EndlessFight.Models
             AudioController.PlayEffect(AudioController.getItem);
             var player = Globals.Player;
             if (player.CurrentLifes < 5 && player.CurrentLifes > 0)
+            {
                 player.CurrentLifes++;
+                Globals.HealPulsation.Pulse();
+            }
         }
     }
 }
