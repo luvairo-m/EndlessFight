@@ -43,7 +43,8 @@ namespace EndlessFight.GameStates
         #endregion
 
         #region Game starting animation
-        private bool isPaused, handleMovement, showCountdown;
+        public static bool IsPaused;
+        private bool handleMovement, showCountdown;
         private float countDownFrequency = 1f;
         private float countDownBuffer = 1f;
         private int countDownCounter = 3;
@@ -161,7 +162,7 @@ namespace EndlessFight.GameStates
             Globals.HitPulsation.Draw(spriteBatch);
             Globals.HealPulsation.Draw(spriteBatch);
 
-            if (showCountdown && !isPaused)
+            if (showCountdown && !IsPaused)
             {
                 countDownFrequency -= delta;
                 if (countDownFrequency <= 0 && countDownCounter != 0)
@@ -185,7 +186,7 @@ namespace EndlessFight.GameStates
                 }
             }
 
-            if (isPaused)
+            if (IsPaused)
             {
                 var (line1, line2) = ("game is paused", "Press Enter to continue");
                 var (size1, size2) = (pauseFont.MeasureString(line1), pauseFont.MeasureString(line2));
@@ -206,12 +207,12 @@ namespace EndlessFight.GameStates
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
                 AudioController.mainTheme.soundEffectInstance.Pause();
-                if (!isPaused) 
+                if (!IsPaused) 
                     AudioController.PlayEffect(AudioController.pause);
-                isPaused = true;
+                IsPaused = true;
             }
      
-            if (!isPaused)
+            if (!IsPaused)
             {
                 currentBackground.Update(gameTime);
                 player.Update(gameTime, handleMovement);
@@ -237,10 +238,10 @@ namespace EndlessFight.GameStates
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    if (isPaused)
+                    if (IsPaused)
                         AudioController.PlayEffect(AudioController.pause);
                     AudioController.PlayMusic(AudioController.mainTheme);
-                    isPaused = false;
+                    IsPaused = false;
                 }
             }
         }
