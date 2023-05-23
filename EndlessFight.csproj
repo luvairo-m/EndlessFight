@@ -24,6 +24,7 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls" />
     <Resource Include="Content\Fonts\Bionicle training card font 2.4.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
