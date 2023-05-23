@@ -21,11 +21,7 @@ namespace EndlessFight.Models
             this.position = position;
         }
 
-        public void Update(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position.Y += delta * speed;
-        }
+        public void Update() => position.Y += Globals.ElapsedSeconds * speed;
     }
 
     public class Background
@@ -45,10 +41,10 @@ namespace EndlessFight.Models
             timer.Tick += OnTimerTick;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             timer.Update();
-            stars.ForEach(star => star.Update(gameTime));
+            stars.ForEach(star => star.Update());
             for (var i = 0; i < stars.Count; i++)
                 if (stars[i].Position.Y > Game1.windowHeight)
                     stars.RemoveAt(i);
@@ -69,7 +65,6 @@ namespace EndlessFight.Models
             {
                 var size = Globals.Randomizer.Next(2, 6);
                 var color = Globals.Randomizer.Next(0, 2) == 1 ? Color.White : Color.Gray;
-
                 stars.Add(new Star(Globals.Randomizer.Next(200, 300), size,
                     new(Globals.Randomizer.Next(spawnOffset, Game1.windowWidth), 0), color));
             }

@@ -201,7 +201,7 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            Globals.Update(gameTime);
+            //Globals.Update(gameTime);
 
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
@@ -214,7 +214,7 @@ namespace EndlessFight.GameStates
      
             if (!IsPaused)
             {
-                currentBackground.Update(gameTime);
+                currentBackground.Update();
                 player.Update(gameTime, handleMovement);
 
                 if (handleMovement)

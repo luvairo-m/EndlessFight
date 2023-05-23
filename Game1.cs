@@ -7,17 +7,13 @@ namespace EndlessFight
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
-
         #region Window Size
         public const int windowWidth = 750;
         public const int windowHeight = 900;
         #endregion
 
-        #region Game Field Offset
-        public const int fieldOffset = 20;
-        #endregion
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         #region State
         private static State currentState;
@@ -28,7 +24,7 @@ namespace EndlessFight
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            currentState = new MenuState(this, Content, graphics);
+            currentState = new GameState(this, Content, graphics);
         }
 
         protected override void Initialize()
@@ -47,6 +43,7 @@ namespace EndlessFight
 
         protected override void Update(GameTime gameTime)
         {
+            Globals.Update(gameTime);
             currentState.Update(gameTime);
             base.Update(gameTime);
         }

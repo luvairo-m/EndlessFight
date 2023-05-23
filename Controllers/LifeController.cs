@@ -1,5 +1,4 @@
-﻿using EndlessFight.GameStates;
-using EndlessFight.Models;
+﻿using EndlessFight.Models;
 
 namespace EndlessFight.Controllers
 {

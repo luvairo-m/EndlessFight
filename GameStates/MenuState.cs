@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SpaceBattle.GameStates;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using EndlessFight.Models;
 
 namespace EndlessFight.GameStates
@@ -31,7 +30,6 @@ namespace EndlessFight.GameStates
             startButtonTexture = ContentManager.Load<Texture2D>("Buttons/start-button");
             quitButtonTexture = ContentManager.Load<Texture2D>("Buttons/quit-button");
             scoreFont = ContentManager.Load<SpriteFont>("Fonts/score-font");
-
             Initialize();
         }
 
@@ -79,7 +77,7 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            currentBackground.Update(gameTime);
+            currentBackground.Update();
 
             foreach (var component in components)
                 component.Update(gameTime);
