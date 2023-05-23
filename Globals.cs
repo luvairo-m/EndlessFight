@@ -24,7 +24,7 @@ namespace EndlessFight
         public const float MaxDifficult = 0.7f;
         public const float DeltaDifficultChange = 0.01f;
         public const float BonusScale = 3.5f;
-        public static SoundEffect enemyShoot;
+        public static SoundEffect EnemyShoot;
 
         public static void Update(GameTime gameTime) 
             => ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

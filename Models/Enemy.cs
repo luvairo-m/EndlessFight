@@ -19,7 +19,7 @@ namespace EndlessFight.Models
         protected int speed;
         protected SpriteAnimation animation;
         protected GrigoryTimer timer;
-        public Audio enemySound = new Audio(0.09f, "enemyDamage", Globals.enemyShoot);
+        public Audio enemySound = new Audio(0.09f, "enemyDamage", Globals.EnemyShoot);
 
         public Enemy(Vector2 spawnPosition, int speed, float shootingFrequency)
         {
