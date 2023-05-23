@@ -9,8 +9,6 @@ namespace EndlessFight.Controllers
             var bullets = BulletsController.CurrentBullets;
             var enemies = EnemiesController.CurrentEnemies;
 
-            // Я слежу за тобой
-
             foreach (var bullet in bullets) 
                 foreach (var enemy in enemies)
                 {
