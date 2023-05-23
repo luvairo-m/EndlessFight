@@ -23,5 +23,12 @@ namespace EndlessFight.Controllers
                 File.WriteAllText(Globals.SerializationPath, JsonSerializer.Serialize(serialization));
             }
         }
+
+        public static int GetBestScore()
+        {
+            SerializationOptions serialization = JsonSerializer.Deserialize<SerializationOptions>(File.ReadAllText(Globals.SerializationPath));
+
+            return serialization.BestScore;
+        }
     }
 }

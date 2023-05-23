@@ -176,6 +176,8 @@ namespace EndlessFight.GameStates
             countDownFrequency = 1f;
             countDownBuffer = 1f;
             countDownCounter = 3;
+
+            SerializationController.MakeSerialization();
         }
 
         private void SetUpEnemies()
