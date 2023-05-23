@@ -6,12 +6,19 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
-using System;
 
 namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
+        /*
+         * 1. Исправить появление взрыва
+         * 2. Добавить эффект использования хилки
+         * 3. Добавить взрывы по всей карте, при использовании бомбы
+         * 4. Исправить нарастание сложности
+         * 5. Изменить скейлинг текстур бонусов
+         */
+
         #region Background
         private Background currentBackground;
         private Texture2D backgroundTexture;
