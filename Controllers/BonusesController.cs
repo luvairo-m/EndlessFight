@@ -43,7 +43,8 @@ namespace EndlessFight.Controllers
         private static Type PickRandomBonusType()
         {
             var number = Globals.Randomizer.Next(200 + 1);
-            if (number > 160 && number <= 170) return typeof(Mult2Bonus);
+            if (number > 140 && number <= 160) return typeof(Mult1Bonus);
+            else if (number > 160 && number <= 170) return typeof(Mult2Bonus);
             else if (number > 170 && number <= 180) return typeof(Mult3Bonus);
             else if (number > 180 && number <= 190) return typeof(BombBonus);
             else if (number > 190 && number <= 200) return typeof(HeartBonus);

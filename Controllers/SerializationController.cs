@@ -7,20 +7,20 @@ namespace EndlessFight.Controllers
     {
         public static void MakeSerialization()
         {
-            if (!File.Exists(Globals.serializationPath))
-                File.WriteAllText(Globals.serializationPath, 
+            if (!File.Exists(Globals.SerializationPath))
+                File.WriteAllText(Globals.SerializationPath, 
                     JsonSerializer.Serialize(new SerializationOptions
                     (ScoreController.Score, ScoreController.Score)));
             else
             {
                 SerializationOptions serialization = JsonSerializer
-                    .Deserialize<SerializationOptions>(File.ReadAllText(Globals.serializationPath));
+                    .Deserialize<SerializationOptions>(File.ReadAllText(Globals.SerializationPath));
 
                 if (ScoreController.Score > serialization.BestScore)
                     serialization.BestScore = ScoreController.Score;
 
                 serialization.AllScore += ScoreController.Score;
-                File.WriteAllText(Globals.serializationPath, JsonSerializer.Serialize(serialization));
+                File.WriteAllText(Globals.SerializationPath, JsonSerializer.Serialize(serialization));
             }
         }
     }

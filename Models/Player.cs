@@ -23,9 +23,7 @@ namespace EndlessFight.Models
         private readonly SpriteAnimation exhaustAnimation;
         private readonly Texture2D shipTexture;
 
-        #region Blaster bullet
         private readonly Texture2D blasterTexture;
-        #endregion
 
         private bool isShooting;
 
@@ -61,25 +59,24 @@ namespace EndlessFight.Models
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var direction = InputController.GetMovementDirectionFromInput();
 
-            if (direction == Direction.Left && position.X > Game1.fieldOffset)
+            if (direction == Direction.Left && position.X > 0)
             {
                 sourceRectangle.X = 0;
                 position.X -= Speed * delta;
             }
-            else if (direction == Direction.Right
-                && position.X + Globals.PlayerShipSize < Game1.windowWidth - Game1.fieldOffset)
+            else if (direction == Direction.Right && position.X + HitBox.Width < Game1.windowWidth)
             {
                 sourceRectangle.X = 32;
                 position.X += Speed * delta;
             }
-            else if (direction == Direction.Up
-                && position.Y > Game1.fieldOffset)
+            else if (direction == Direction.Up && position.Y > 0)
             {
                 sourceRectangle.X = 16;
                 position.Y -= Speed * delta;
             }
-            else if (direction == Direction.Down
-                && position.Y + Globals.PlayerShipSize < Game1.windowHeight - Game1.fieldOffset)
+            else if (direction == Direction.Down 
+                && position.Y + HitBox.Height + exhaustAnimation.Size.Height * exhaustAnimation.Scale
+                < Game1.windowHeight)
             {
                 sourceRectangle.X = 16;
                 position.Y += Speed * delta;

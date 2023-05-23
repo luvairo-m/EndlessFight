@@ -13,7 +13,6 @@ namespace EndlessFight.GameStates
     {
         /*
          * 2. Добавить эффект использования хилки
-         * 3. Добавить взрывы по всей карте, при использовании бомбы
          * 4. Исправить нарастание сложности
          * 5. Изменить скейлинг текстур бонусов
          * 6. Изменить некоторые текстуры бонусов
@@ -43,7 +42,7 @@ namespace EndlessFight.GameStates
 
         #region Bonuses
         private Texture2D heartTexture, bombTexture;
-        private Texture2D x2Texture, x3Texture;
+        private Texture2D x1Texture, x2Texture, x3Texture;
         #endregion
 
         #region Enemies and Controller
@@ -58,14 +57,14 @@ namespace EndlessFight.GameStates
         #endregion
 
         #region Audio
-        public SoundEffect mainThemeSound;
-        public SoundEffect shootSound;
-        public SoundEffect hitSound;
-        public SoundEffect getItemSound;
-        public SoundEffect getDamageSound;
-        public SoundEffect enemyShootSound;
-        public SoundEffect pauseSound;
-        public SoundEffect allDestroySound;
+        private SoundEffect mainThemeSound;
+        private SoundEffect shootSound;
+        private SoundEffect hitSound;
+        private SoundEffect getItemSound;
+        private SoundEffect getDamageSound;
+        private SoundEffect enemyShootSound;
+        private SoundEffect pauseSound;
+        private SoundEffect allDestroySound;
         #endregion
 
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
@@ -88,10 +87,11 @@ namespace EndlessFight.GameStates
             pauseFont = ContentManager.Load<SpriteFont>("Fonts/pause-font");
             countDownFont = ContentManager.Load<SpriteFont>("Fonts/countdown-font");
             bombTexture = ContentManager.Load<Texture2D>("Bonuses/bomb");
-            heartTexture = ContentManager.Load<Texture2D>("Bonuses/golden-heart");
+            heartTexture = ContentManager.Load<Texture2D>("Bonuses/heart");
             lifeIconTexture = ContentManager.Load<Texture2D>("UI/life-icon");
-            x2Texture = ContentManager.Load<Texture2D>("Bonuses/x2");
-            x3Texture = ContentManager.Load<Texture2D>("Bonuses/x3");
+            x1Texture = ContentManager.Load<Texture2D>("Bonuses/shoot1x");
+            x2Texture = ContentManager.Load<Texture2D>("Bonuses/shoot2x");
+            x3Texture = ContentManager.Load<Texture2D>("Bonuses/shoot3x");
             mainThemeSound = ContentManager.Load<SoundEffect>("Sounds/mainTheme1");
             shootSound = ContentManager.Load<SoundEffect>("Sounds/hit2");
             hitSound = ContentManager.Load<SoundEffect>("Sounds/random");
@@ -127,10 +127,11 @@ namespace EndlessFight.GameStates
 
             BonusesController.BonusesTextures = new()
             {
-                { typeof(HeartBonus), new TextureDescription(heartTexture, 2) },
+                { typeof(HeartBonus), new TextureDescription(heartTexture, 6) },
                 { typeof(BombBonus), new TextureDescription(bombTexture, 3) },
-                { typeof(Mult2Bonus), new TextureDescription(x2Texture, 2) },
-                { typeof(Mult3Bonus), new TextureDescription(x3Texture, 2) },
+                { typeof(Mult1Bonus), new TextureDescription(x1Texture, 15) },
+                { typeof(Mult2Bonus), new TextureDescription(x2Texture, 15) },
+                { typeof(Mult3Bonus), new TextureDescription(x3Texture, 15) },
             };
 
             EnemiesController.SpawnFrequency = 2f;

@@ -18,7 +18,7 @@ namespace EndlessFight
         public const int PlayerShipSize = 80;
         public const int EnemySpawnOffset = 300;
         public const int PlayerBaseSpeed = 430;
-        public const string serializationPath = "userdata.json";
+        public const string SerializationPath = "userdata.json";
         public const float TimeToChengeDifficulty = 2;
         public const float MaxDifficult = 0.5f;
         public const float DeltaDifficultChange = 1f;

@@ -36,7 +36,7 @@ namespace EndlessFight.Controllers
             {
                 var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
                     (Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
-                    : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50,
+                    : new Vector2(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50,
                     ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
 
                 var enemyType = PickRandomEnemyType();
