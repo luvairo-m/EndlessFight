@@ -1,26 +1,16 @@
 ﻿using EndlessFight.Controllers;
 using EndlessFight.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceBattle.GameStates;
-using System.Text.Json;
-using System.IO;
 
 namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
-        /*
-         * 1) Добавить игровое меню
-         * 2) Добавить статистику
-         * 3) Реализовать логику проигрыша
-         * 4) Сделать сохранение игровых данных на жёстком диске
-         * 5) Реализовать выпадение предметов из врагов
-         * 6) Добавить эффект получения урона
-         * 7) Опционально: создать больше анимаций в UI
-         */
         #region Background
         private Background currentBackground;
         private Texture2D backgroundTexture;
@@ -28,43 +18,47 @@ namespace EndlessFight.GameStates
 
         #region Player
         private Player player;
-        private Texture2D playerTexture;
-        private Texture2D exhaustTexture;
-        private Texture2D lifeIconTexture;
+        private Texture2D playerTexture, exhaustTexture, lifeIconTexture;
         #endregion
 
         #region Bullets
-        private Texture2D blasterTexture;
-        private Texture2D misileTexture;
-        private Texture2D bonShootTexture;
-        private Texture2D lipsShootTexture;
-        private Texture2D alanShootTexture;
+        private Texture2D blasterTexture, lipsShootTexture, alanShootTexture;
         #endregion
 
         #region Effects
-        private Texture2D explosionTexture;
-        private Texture2D sparkleTexture;
+        private Texture2D explosionTexture, sparkleTexture;
         #endregion
 
         #region Fonts
-        private SpriteFont scoreFont;
-        private SpriteFont pauseFont;
-        private SpriteFont countDownFont;
+        private SpriteFont scoreFont, pauseFont, countDownFont;
+        #endregion
+
+        #region Bonuses
+        private Texture2D heartTexture, bombTexture;
+        private Texture2D x1Texture, x2Texture, x3Texture;
         #endregion
 
         #region Enemies and Controller
-        private Texture2D alanTexture;
-        private Texture2D bonTexture;
-        private Texture2D lipsTexture;
+        private Texture2D alanTexture, bonTexture, lipsTexture;
         #endregion
 
         #region Game starting animation
-        private bool isPaused;
-        private bool handleMovement;
-        private bool showCountdown;
+        public static bool IsPaused;
+        private bool handleMovement, showCountdown;
         private float countDownFrequency = 1f;
         private float countDownBuffer = 1f;
         private int countDownCounter = 3;
+        #endregion
+
+        #region Audio
+        private SoundEffect mainThemeSound;
+        private SoundEffect shootSound;
+        private SoundEffect hitSound;
+        private SoundEffect getItemSound;
+        private SoundEffect getDamageSound;
+        private SoundEffect enemyShootSound;
+        private SoundEffect allDestroySound;
+        private SoundEffect pauseSound;
         #endregion
 
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
@@ -76,19 +70,30 @@ namespace EndlessFight.GameStates
             playerTexture = ContentManager.Load<Texture2D>("Player/ship");
             exhaustTexture = ContentManager.Load<Texture2D>("Player/boosters");
             blasterTexture = ContentManager.Load<Texture2D>("Player/power-shoot");
-            misileTexture = ContentManager.Load<Texture2D>("Player/missile");
             alanTexture = ContentManager.Load<Texture2D>("Enemies/alan");
             bonTexture = ContentManager.Load<Texture2D>("Enemies/bon");
             lipsTexture = ContentManager.Load<Texture2D>("Enemies/lips");
             explosionTexture = ContentManager.Load<Texture2D>("Effects/explosion");
             sparkleTexture = ContentManager.Load<Texture2D>("Effects/sparkle");
-            lipsShootTexture = ContentManager.Load<Texture2D>("Enemies/lips-shoot");
-            alanShootTexture = ContentManager.Load<Texture2D>("Enemies/alan-shoot");
-            bonShootTexture = ContentManager.Load<Texture2D>("Enemies/bon-shoot");
+            lipsShootTexture = ContentManager.Load<Texture2D>("Enemies/alan-shoot");
+            alanShootTexture = ContentManager.Load<Texture2D>("Enemies/bon-shoot");
             scoreFont = ContentManager.Load<SpriteFont>("Fonts/score-font");
             pauseFont = ContentManager.Load<SpriteFont>("Fonts/pause-font");
             countDownFont = ContentManager.Load<SpriteFont>("Fonts/countdown-font");
+            bombTexture = ContentManager.Load<Texture2D>("Bonuses/bomb");
+            heartTexture = ContentManager.Load<Texture2D>("Bonuses/heart");
             lifeIconTexture = ContentManager.Load<Texture2D>("UI/life-icon");
+            x1Texture = ContentManager.Load<Texture2D>("Bonuses/shoot1x");
+            x2Texture = ContentManager.Load<Texture2D>("Bonuses/shoot2x");
+            x3Texture = ContentManager.Load<Texture2D>("Bonuses/shoot3x");
+            mainThemeSound = ContentManager.Load<SoundEffect>("Sounds/mainTheme1");
+            shootSound = ContentManager.Load<SoundEffect>("Sounds/hit2");
+            hitSound = ContentManager.Load<SoundEffect>("Sounds/random");
+            getItemSound = ContentManager.Load<SoundEffect>("Sounds/item2");
+            getDamageSound = ContentManager.Load<SoundEffect>("Sounds/hit");
+            enemyShootSound = ContentManager.Load<SoundEffect>("Sounds/something1");
+            pauseSound = ContentManager.Load<SoundEffect>("Sounds/pause");
+            allDestroySound = ContentManager.Load<SoundEffect>("Sounds/shoot1");
             Initialize();
         }
 
@@ -97,51 +102,67 @@ namespace EndlessFight.GameStates
             var exhaustAnimation = new SpriteAnimation(exhaustTexture, 2, 4) { Scale = 4f };
             currentBackground = new Background(backgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
             player = new Player(new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200), Globals.PlayerBaseSpeed,
-                playerTexture, misileTexture, blasterTexture, exhaustAnimation);
+                playerTexture, blasterTexture, exhaustAnimation);
+
             Globals.Player = player;
+            Globals.HitPulsation = new Pulsation((255, 0, 0), backgroundTexture);
+            Globals.HealPulsation = new Pulsation((0, 255, 0), backgroundTexture);
+
+            SetUpEnemies();
 
             #region Controllers set up
             var explosionTextures = new[]
             {
-                new TextureDescription(5, sparkleTexture),
-                new TextureDescription(5, explosionTexture)
+                new TextureDescription(sparkleTexture, 5),
+                new TextureDescription(explosionTexture, 5)
             };
-            var enemyTextures = new[]
+
+            BonusesController.BonusesTextures = new()
             {
-                new TextureDescription(3, alanTexture),
-                new TextureDescription(3, bonTexture),
-                new TextureDescription(3, lipsTexture)
-            };
-            var enemyBullets = new[]
-            {
-                new TextureDescription(2, alanShootTexture),
-                new TextureDescription(4, bonShootTexture),
-                new TextureDescription(4, lipsShootTexture)
+                { typeof(HeartBonus), new TextureDescription(heartTexture, 6) },
+                { typeof(BombBonus), new TextureDescription(bombTexture, 3) },
+                { typeof(Mult1Bonus), new TextureDescription(x1Texture, 15) },
+                { typeof(Mult2Bonus), new TextureDescription(x2Texture, 15) },
+                { typeof(Mult3Bonus), new TextureDescription(x3Texture, 15) },
             };
 
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
-            EnemyBuilder.EnemyTextures = enemyTextures;
-            EnemyBuilder.EnemyBullets = enemyBullets;
-            EnemiesController.SpawnInterval = 2f;
             ExplosionContoller.ExplosionTextures = explosionTextures;
+
+            AudioController.mainTheme = new Audio(0.15f, "mainTheme", mainThemeSound);
+            AudioController.shoot = new Audio(0.15f, "shoot", shootSound);
+            AudioController.hit = new Audio(0.15f, "hit", hitSound);
+            AudioController.getItem = new Audio(0.35f, "getItem", getItemSound);
+            AudioController.getDamage = new Audio(0.35f, "getDamage", getDamageSound);
+            AudioController.enemyShoot = new Audio(0.09f, "enemyDamage", enemyShootSound);
+            AudioController.pauseSound = new Audio(0.08f, "pause", pauseSound);
+            AudioController.allDestroy = new Audio(0.4f, "allDestroy", allDestroySound);
+            AudioController.pause = new Audio(0.8f, "pause", pauseSound);
+            AudioController.PlayMusic(AudioController.mainTheme);
+
+            Globals.enemyShoot = enemyShootSound;
             #endregion
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
 
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             currentBackground.Draw(spriteBatch, Graphics.GraphicsDevice);
             player.Draw(spriteBatch);
             LivesController.Draw(spriteBatch);
             BulletsController.Draw(spriteBatch);
             EnemiesController.Draw(spriteBatch);
             ExplosionContoller.Draw(spriteBatch);
+            BonusesController.Draw(spriteBatch);
             ScoreController.Draw(spriteBatch);
 
-            if (showCountdown && !isPaused)
+            Globals.HitPulsation.Draw(spriteBatch);
+            Globals.HealPulsation.Draw(spriteBatch);
+
+            if (showCountdown && !IsPaused)
             {
                 countDownFrequency -= delta;
                 if (countDownFrequency <= 0 && countDownCounter != 0)
@@ -165,7 +186,7 @@ namespace EndlessFight.GameStates
                 }
             }
 
-            if (isPaused)
+            if (IsPaused)
             {
                 var (line1, line2) = ("game is paused", "Press Enter to continue");
                 var (size1, size2) = (pauseFont.MeasureString(line1), pauseFont.MeasureString(line2));
@@ -175,33 +196,40 @@ namespace EndlessFight.GameStates
                     new(Game1.windowWidth / 2 - size2.X / 2, Game1.windowHeight / 2), Color.White);
             }
 
-
             spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Globals.Update(gameTime);
+
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Escape))
-                isPaused = true;
-
-           
-            if (!isPaused)
+            {
+                AudioController.mainTheme.soundEffectInstance.Pause();
+                if (!IsPaused) 
+                    AudioController.PlayEffect(AudioController.pause);
+                IsPaused = true;
+            }
+     
+            if (!IsPaused)
             {
                 currentBackground.Update(gameTime);
                 player.Update(gameTime, handleMovement);
 
                 if (handleMovement)
                 {
+                    Globals.HitPulsation.Update(gameTime);
+                    Globals.HealPulsation.Update(gameTime);
                     EnemiesController.Update(gameTime);
-                    BulletsController.Update(gameTime);
-                    ExplosionContoller.Update(gameTime);
+                    BulletsController.Update();
+                    ExplosionContoller.Update();
+                    BonusesController.Update();
                     LifeController.ControlLifeStatus();
                 }
                 else if (!showCountdown)
                 {
-                    player.Position += new Vector2(0, -1) * 150 * delta;
+                    player.Position += new Vector2(0, -1) * 150 * Globals.ElapsedSeconds;
                     if (player.Position.Y <= Game1.windowHeight / 1.3)
                         showCountdown = true;
                 }
@@ -209,13 +237,22 @@ namespace EndlessFight.GameStates
             else
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
-                    isPaused = false;
+                {
+                    if (IsPaused)
+                        AudioController.PlayEffect(AudioController.pause);
+                    AudioController.PlayMusic(AudioController.mainTheme);
+                    IsPaused = false;
+                }
             }
+        }
 
-            //if (Player.CurrentLifes <= 0 && !isPaused)
-            //{
-            //    SerializationController.MakeSerialization();
-            //}
+        private void SetUpEnemies()
+        {
+            Alan.SpriteSheet = new(alanTexture, 3);
+            Alan.BulletTexture = new(alanShootTexture, 4);
+            Lips.SpriteSheet = new(lipsTexture, 3);
+            Lips.BulletTexture = new(lipsShootTexture, 2);
+            Bon.SpriteSheet = new(bonTexture, 3);
         }
     }
 }

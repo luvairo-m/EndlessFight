@@ -1,15 +1,13 @@
 ﻿using EndlessFight.Controllers;
-using EndlessFight.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace EndlessFight.Models
 {
-    public class Player : IMovable, IHittable
+    public class Player 
     {
-        public int ShootingMultiplier = 2;
-        public static int CurrentLifes = 5;
+        public int ShootingMultiplier = 1;
+        public int CurrentLifes = 5;
 
         public Vector2 Position { get => position; set => position = value; }
         public Rectangle HitBox => new((int)Position.X, (int)Position.Y,
@@ -25,17 +23,12 @@ namespace EndlessFight.Models
         private readonly SpriteAnimation exhaustAnimation;
         private readonly Texture2D shipTexture;
 
-        // В разработке
-        private readonly Texture2D missileTexture;
-
-        #region Blaster bullet
         private readonly Texture2D blasterTexture;
-        #endregion
 
         private bool isShooting;
 
         public Player(Vector2 spawnPosition, int speed, Texture2D shipTexture,
-            Texture2D missileTexture, Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
+            Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
         {
             Position = spawnPosition;
             sourceRectangle = new Rectangle(16, 0, 16, shipTexture.Height);
@@ -43,7 +36,6 @@ namespace EndlessFight.Models
             this.blasterTexture = blasterTexture;
             this.exhaustAnimation = exhaustAnimation;
             this.shipTexture = shipTexture;
-            this.missileTexture = missileTexture;
         }
 
         public void Update(GameTime gameTime, bool handleMovement = true)
@@ -53,8 +45,7 @@ namespace EndlessFight.Models
                 HandleMovement(gameTime);
                 HandleShooting();
             }
-
-            HandleAnimation(gameTime);
+            HandleAnimation();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -68,25 +59,24 @@ namespace EndlessFight.Models
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var direction = InputController.GetMovementDirectionFromInput();
 
-            if (direction == Direction.Left && position.X > Game1.fieldOffset)
+            if (direction == Direction.Left && position.X > 0)
             {
                 sourceRectangle.X = 0;
                 position.X -= Speed * delta;
             }
-            else if (direction == Direction.Right
-                && position.X + Globals.PlayerShipSize < Game1.windowWidth - Game1.fieldOffset)
+            else if (direction == Direction.Right && position.X + HitBox.Width < Game1.windowWidth)
             {
                 sourceRectangle.X = 32;
                 position.X += Speed * delta;
             }
-            else if (direction == Direction.Up
-                && position.Y > Game1.fieldOffset)
+            else if (direction == Direction.Up && position.Y > 0)
             {
                 sourceRectangle.X = 16;
                 position.Y -= Speed * delta;
             }
-            else if (direction == Direction.Down
-                && position.Y + Globals.PlayerShipSize < Game1.windowHeight - Game1.fieldOffset)
+            else if (direction == Direction.Down 
+                && position.Y + HitBox.Height + exhaustAnimation.Size.Height * exhaustAnimation.Scale
+                < Game1.windowHeight)
             {
                 sourceRectangle.X = 16;
                 position.Y += Speed * delta;
@@ -94,9 +84,9 @@ namespace EndlessFight.Models
             else sourceRectangle.X = 16;
         }
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
-            exhaustAnimation.Update(gameTime);
+            exhaustAnimation.Update();
             exhaustAnimation.Position = new(Position.X + Globals.PlayerShipSize / 4,
                 Position.Y + Globals.PlayerShipSize);
         }
@@ -105,19 +95,15 @@ namespace EndlessFight.Models
         {
             var shootType = InputController.GetBulletTypeFromInput();
             if (shootType == BulletType.Blaster) DoBlasterShoot();
-            else if (shootType == BulletType.Rocket) DoRocketShoot();
             else isShooting = false;
-        }
-
-        private void DoRocketShoot()
-        {
-            throw new NotImplementedException();
         }
 
         private void DoBlasterShoot()
         {
             if (!isShooting)
             {
+                AudioController.PlayEffect(AudioController.shoot);
+
                 float step = (float)Globals.PlayerShipSize / (ShootingMultiplier * 2);
                 var buffer = Position.X;
 

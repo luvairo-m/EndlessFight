@@ -26,6 +26,7 @@
 /build:Backgrounds/space-background.png
 
 #begin Buttons/quit-button.png
+#begin Bonuses/bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -36,8 +37,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Buttons/quit-button.png
-
 #begin Buttons/start-button.png
+/build:Bonuses/bomb.png
+#begin Bonuses/heart.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -48,8 +50,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Buttons/start-button.png
-
 #begin Buttons/start-button.png
+/build:Bonuses/heart.png
+#begin Bonuses/shoot1x.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -60,8 +63,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Buttons/start-button.png
-
 #begin Controls/ButtonYellow.png
+/build:Bonuses/shoot1x.png
+#begin Bonuses/shoot2x.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -72,6 +76,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Controls/ButtonYellow.png
+/build:Bonuses/shoot2x.png
+#begin Bonuses/shoot3x.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bonuses/shoot3x.png
 
 #begin Effects/explosion.png
 /importer:TextureImporter
@@ -268,6 +284,90 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/shoot.png
+
+#begin Sounds/enemy-explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/enemy-explosion.wav
+
+#begin Sounds/hit.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hit.mp3
+
+#begin Sounds/hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hit2.wav
+
+#begin Sounds/item1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/item1.wav
+
+#begin Sounds/item2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/item2.wav
+
+#begin Sounds/mainTheme1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/mainTheme1.mp3
+
+#begin Sounds/mainTheme2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/mainTheme2.mp3
+
+#begin Sounds/menu-theme.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/menu-theme.mp3
+
+#begin Sounds/pause.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/pause.mp3
+
+#begin Sounds/random.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/random.wav
+
+#begin Sounds/shoot1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/shoot1.mp3
+
+#begin Sounds/something1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/something1.mp3
+
+#begin Sounds/something2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/something2.mp3
+
+#begin Sounds/something3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/something3.wav
 
 #begin UI/bars.png
 /importer:TextureImporter

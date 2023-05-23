@@ -8,10 +8,10 @@ namespace EndlessFight
         public int Frames;
         public Texture2D Texture;
 
-        public TextureDescription(int frames, Texture2D texture)
+        public TextureDescription(Texture2D texture, int frames)
         {
-            Frames = frames;
             Texture = texture;
+            Frames = frames;
         }
     }
 }

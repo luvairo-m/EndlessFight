@@ -48,9 +48,9 @@ namespace EndlessFight
         public SpriteAnimation(Texture2D Texture, int frames, int fps) : base(Texture, frames)
             => FramesPerSecond = fps;
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeElapsed += Globals.ElapsedSeconds;
 
             if (timeElapsed > timeToUpdate)
             {

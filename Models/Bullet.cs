@@ -1,12 +1,11 @@
-﻿using EndlessFight.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EndlessFight.Models
 {
     public enum BulletOwner { Enemy, Player };
 
-    public class Bullet : IMovable, IHittable
+    public class Bullet 
     {
         public Vector2 Position { get => position; set => position = value; }
         public int Speed { get => speed; set => speed = value; }
@@ -33,24 +32,21 @@ namespace EndlessFight.Models
             this.speed = speed;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            HandleAnimation(gameTime);
-            HandleMovement(gameTime);
+            HandleAnimation();
+            HandleMovement();
         }
 
         public void Draw(SpriteBatch spriteBatch) => animation.Draw(spriteBatch);
 
-        public void HandleAnimation(GameTime gameTime)
+        public void HandleAnimation()
         {
-            animation.Update(gameTime);
+            animation.Update();
             animation.Position = position;
         }
 
-        public void HandleMovement(GameTime gameTime)
-        {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += direction * delta * speed;
-        }
+        public void HandleMovement() => 
+            position += direction * speed * Globals.ElapsedSeconds;
     }
 }

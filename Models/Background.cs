@@ -35,39 +35,20 @@ namespace EndlessFight.Models
         private readonly List<Star> stars = new();
         private readonly Color color;
         private const int spawnOffset = -15;
-
-        private float frequency;
-        private readonly float frequencyBuffer;
+        private readonly GrigoryTimer timer;
 
         public Background(Texture2D backgroundTexture, Color backgroundColor, float spawnFrequency)
         {
             StarTexture = backgroundTexture;
-            frequencyBuffer = spawnFrequency;
             color = backgroundColor;
-            frequency = spawnFrequency;
+            timer = new GrigoryTimer(spawnFrequency);
+            timer.Tick += OnTimerTick;
         }
 
         public void Update(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            frequency -= delta;
-
-            if (frequency <= 0)
-            {
-                for (var i = 0; i < 6; i++)
-                {
-                    var size = Globals.Randomizer.Next(2, 6);
-                    var color = Globals.Randomizer.Next(0, 2) == 1 ? Color.White : Color.Gray;
-
-                    stars.Add(new Star(Globals.Randomizer.Next(200, 300), size,
-                        new(Globals.Randomizer.Next(spawnOffset, Game1.windowWidth), 0), color));
-                }
-
-                frequency = frequencyBuffer;
-            }
-
+            timer.Update();
             stars.ForEach(star => star.Update(gameTime));
-
             for (var i = 0; i < stars.Count; i++)
                 if (stars[i].Position.Y > Game1.windowHeight)
                     stars.RemoveAt(i);
@@ -80,6 +61,19 @@ namespace EndlessFight.Models
                 spriteBatch.Draw(StarTexture, 
                 new Rectangle((int)star.Position.X, (int)star.Position.Y, star.Size, star.Size),
                 star.Color));
+        }
+
+        private void OnTimerTick()
+        {
+            for (var i = 0; i < 6; i++)
+            {
+                var size = Globals.Randomizer.Next(2, 6);
+                var color = Globals.Randomizer.Next(0, 2) == 1 ? Color.White : Color.Gray;
+
+                stars.Add(new Star(Globals.Randomizer.Next(200, 300), size,
+                    new(Globals.Randomizer.Next(spawnOffset, Game1.windowWidth), 0), color));
+            }
+            timer.Reset();
         }
     }
 }
