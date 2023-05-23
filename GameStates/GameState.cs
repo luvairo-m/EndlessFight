@@ -63,8 +63,8 @@ namespace EndlessFight.GameStates
         private SoundEffect getItemSound;
         private SoundEffect getDamageSound;
         private SoundEffect enemyShootSound;
-        private SoundEffect pauseSound;
         private SoundEffect allDestroySound;
+        private SoundEffect pauseSound;
         #endregion
 
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
@@ -98,7 +98,7 @@ namespace EndlessFight.GameStates
             getItemSound = ContentManager.Load<SoundEffect>("Sounds/item2");
             getDamageSound = ContentManager.Load<SoundEffect>("Sounds/hit");
             enemyShootSound = ContentManager.Load<SoundEffect>("Sounds/something1");
-            pauseSound = ContentManager.Load<SoundEffect>("Sounds/mainTheme2");
+            pauseSound = ContentManager.Load<SoundEffect>("Sounds/pause");
             allDestroySound = ContentManager.Load<SoundEffect>("Sounds/shoot1");
             Initialize();
         }
@@ -146,6 +146,7 @@ namespace EndlessFight.GameStates
             AudioController.enemyShoot = new Audio(0.09f, "enemyDamage", enemyShootSound);
             AudioController.pauseSound = new Audio(0.08f, "pause", pauseSound);
             AudioController.allDestroy = new Audio(0.4f, "allDestroy", allDestroySound);
+            AudioController.pause = new Audio(0.8f, "pause", pauseSound);
             AudioController.PlayMusic(AudioController.mainTheme);
 
             Globals.enemyShoot = enemyShootSound;
@@ -214,7 +215,8 @@ namespace EndlessFight.GameStates
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
                 AudioController.mainTheme.soundEffectInstance.Pause();
-                AudioController.PlayMusic(AudioController.pauseSound);
+                if (!isPaused) 
+                    AudioController.PlayEffect(AudioController.pause);
                 isPaused = true;
             }
      
@@ -244,7 +246,6 @@ namespace EndlessFight.GameStates
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    AudioController.pauseSound.soundEffectInstance.Stop();
                     AudioController.PlayMusic(AudioController.mainTheme);
                     isPaused = false;
                 }

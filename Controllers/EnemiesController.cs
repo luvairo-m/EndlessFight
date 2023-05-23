@@ -31,7 +31,7 @@ namespace EndlessFight.Controllers
 
         static EnemiesController()
         {
-            timer = new(1.8f);
+            timer = new(0.7f);
             timer.Tick += () =>
             {
                 var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
@@ -49,8 +49,8 @@ namespace EndlessFight.Controllers
 
                 CurrentEnemies.Add(enemy);
 
-                //timer.Interval = spawnFrequencyBuffer;
                 timer.Reset();
+                HandleDifficulty();
             };
         }
 
@@ -58,7 +58,7 @@ namespace EndlessFight.Controllers
         {
             HandleSpawning();
             HandleCollision();
-            HandleDifficulty();
+            //HandleDifficulty();
 
             CurrentEnemies.ForEach(enemy => enemy.Update());
             for (var i = 0; i < CurrentEnemies.Count; i++)
@@ -94,13 +94,8 @@ namespace EndlessFight.Controllers
 
         private static void HandleDifficulty()
         {
-            difficultyInterval += Globals.ElapsedSeconds;
-            if (difficultyInterval > Globals.TimeToChengeDifficulty)
-            {
-                difficultyInterval = 0;
-                spawnFrequencyBuffer -= (spawnFrequencyBuffer <= Globals.MaxDifficult) 
-                    ? 0 : Globals.DeltaDifficultChange;
-            }
+            timer.Interval -= (timer.Interval <= Globals.MaxDifficult)
+                ? 0 : Globals.DeltaDifficultChange*timer.Interval;
         }
 
         private static void DeleteDeadOnes()

@@ -21,8 +21,8 @@ namespace EndlessFight
         public const int PlayerBaseSpeed = 430;
         public const string SerializationPath = "userdata.json";
         public const float TimeToChengeDifficulty = 2;
-        public const float MaxDifficult = 0.5f;
-        public const float DeltaDifficultChange = 1f;
+        public const float MaxDifficult = 0.7f;
+        public const float DeltaDifficultChange = 0.01f;
         public const float BonusScale = 3.5f;
         public static SoundEffect enemyShoot;
 
