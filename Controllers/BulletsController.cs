@@ -11,6 +11,7 @@ namespace EndlessFight.Controllers
         public static void Update()
         {
             CurrentBullets.ForEach(bullet => bullet.Update());
+            HandleCollision();
             for (var i = 0; i < CurrentBullets.Count; i++)
             {
                 var bullet = CurrentBullets[i];
@@ -24,6 +25,18 @@ namespace EndlessFight.Controllers
         }
 
         public static void Draw(SpriteBatch spriteBatch) => CurrentBullets.ForEach(bullet => bullet.Draw(spriteBatch));
+
+        private static void HandleCollision()
+        {
+            for (var i = 0; i < CurrentBullets.Count; i++)
+                if (CurrentBullets[i].HitBox.Intersects(Globals.Player.HitBox) 
+                    && CurrentBullets[i].Owner != BulletOwner.Player)
+                {
+                    AudioController.PlayEffect(AudioController.getDamage);
+                    CurrentBullets[i].IsAlive = false;
+                    LifeController.OnPlayerDamaged();
+                }
+        }
 
         private static void DeleteDeadOnes()
         {

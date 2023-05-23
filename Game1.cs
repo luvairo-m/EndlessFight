@@ -2,12 +2,16 @@
 using EndlessFight.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using static EndlessFight.Resources;
 
 namespace EndlessFight
 {
     public class Game1 : Game
     {
+        private State menuState;
+        private State gameState;
+
         #region Window Size
         public const int windowWidth = 750;
         public const int windowHeight = 900;
@@ -31,6 +35,11 @@ namespace EndlessFight
             gameResources = new(Content);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            Globals.MainGame = this;
+
+            menuState = new MenuState(this, Content, graphics);
+            gameState = new GameState(this, Content, graphics);
         }
 
         protected override void Initialize()
@@ -46,7 +55,7 @@ namespace EndlessFight
             spriteBatch = new SpriteBatch(GraphicsDevice);
             gameResources.InitializeResources();
             currentBackground = new Background(BackgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
-            currentState = new MenuState(this, Content, graphics);
+            currentState = menuState;
             currentState.LoadContent();
         }
 
@@ -72,10 +81,12 @@ namespace EndlessFight
             spriteBatch.End();
         }
 
-        public void ChangeState(State state)
+        public void ChangeState()
         {
-            state.LoadContent();
-            currentState = state;
+            currentState.OnExit();
+            if (currentState is MenuState) currentState = gameState;
+            else currentState = menuState;
+            currentState.LoadContent();
         }
     }
 }

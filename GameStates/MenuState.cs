@@ -54,9 +54,15 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime) => components.ForEach(c => c.Update(gameTime));
 
+        // TODO: отрефакторить это место
+        public override void OnExit()
+        {
+
+        }
+
         private void LoadGameButton_Click(object sender, EventArgs e)
         {
-            Game.ChangeState(new GameState(Game, ContentManager, Graphics));
+            Globals.MainGame.ChangeState();
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)

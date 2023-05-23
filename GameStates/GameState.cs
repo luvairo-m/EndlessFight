@@ -15,7 +15,8 @@ namespace EndlessFight.GameStates
 
         #region Game starting animation
         public static bool IsPaused;
-        private bool handleMovement, showCountdown;
+        private bool handleMovement;
+        private bool showCountdown;
         private float countDownFrequency = 1f;
         private float countDownBuffer = 1f;
         private int countDownCounter = 3;
@@ -166,6 +167,15 @@ namespace EndlessFight.GameStates
                     IsPaused = false;
                 }
             }
+        }
+
+        public override void OnExit()
+        {
+            handleMovement = false;
+            showCountdown = false;
+            countDownFrequency = 1f;
+            countDownBuffer = 1f;
+            countDownCounter = 3;
         }
 
         private void SetUpEnemies()
