@@ -25,7 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/space-background.png
 
-#begin Buttons/quit-button.png
 #begin Bonuses/bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -36,9 +35,8 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Buttons/quit-button.png
-#begin Buttons/start-button.png
 /build:Bonuses/bomb.png
+
 #begin Bonuses/heart.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -49,9 +47,8 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Buttons/start-button.png
-#begin Buttons/start-button.png
 /build:Bonuses/heart.png
+
 #begin Bonuses/shoot1x.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -62,9 +59,8 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Buttons/start-button.png
-#begin Controls/ButtonYellow.png
 /build:Bonuses/shoot1x.png
+
 #begin Bonuses/shoot2x.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -75,8 +71,8 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Controls/ButtonYellow.png
 /build:Bonuses/shoot2x.png
+
 #begin Bonuses/shoot3x.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -88,6 +84,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Bonuses/shoot3x.png
+
+#begin Buttons/quit-button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Buttons/quit-button.png
+
+#begin Buttons/start-button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Buttons/start-button.png
 
 #begin Effects/explosion.png
 /importer:TextureImporter

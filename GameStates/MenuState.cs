@@ -49,7 +49,11 @@ namespace EndlessFight.GameStates
             foreach (var component in components)
                 component.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(RecordFont, "Best Score - 0", new Vector2(178, 630), Color.White);
+            var size = RecordFont.MeasureString("Best Score - 0");
+
+            spriteBatch.DrawString(RecordFont, "Best Score - 0", 
+                new Vector2(Game1.windowWidth / 2 - size.X / 2, Game1.windowHeight / 2 - size.Y / 2 + 210), 
+                Color.White);
         }
 
         public override void Update(GameTime gameTime) => components.ForEach(c => c.Update(gameTime));
