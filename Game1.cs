@@ -24,7 +24,7 @@ namespace EndlessFight
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            currentState = new GameState(this, Content, graphics);
+            currentState = new MenuState(this, Content, graphics);
         }
 
         protected override void Initialize()
