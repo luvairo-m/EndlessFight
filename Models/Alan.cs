@@ -28,6 +28,7 @@ namespace EndlessFight.Models
                     Position.Y + HitBox.Height), 570, shootingDirection,
                     new(BulletTexture.Texture, BulletTexture.Frames, 3)
                     { Scale = Globals.BulletScale }, BulletOwner.Enemy));
+
                 timer.Reset();
             };
         }

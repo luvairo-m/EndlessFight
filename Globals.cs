@@ -22,6 +22,7 @@ namespace EndlessFight
         public const float TimeToChengeDifficulty = 2;
         public const float MaxDifficult = 0.5f;
         public const float DeltaDifficultChange = 1f;
+        public const float BonusScale = 3.5f;
         public static SoundEffect enemyShoot;
 
         public static void Update(GameTime gameTime) 

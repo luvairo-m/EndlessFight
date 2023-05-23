@@ -38,9 +38,18 @@ namespace EndlessFight.Controllers
                     (Globals.EnemySpawnOffset, Game1.windowWidth - Globals.EnemySpawnOffset), -Globals.EnemySpawnOffset)
                     : new(RandomIntWithoutSegment(10, Game1.windowWidth - 50, ((int)CurrentEnemies[^1].Position.X) - 50,
                     ((int)CurrentEnemies[^1].Position.X) + Globals.EnemySpawnOffset + 50), -Globals.EnemySpawnOffset);
+
+                var enemyType = PickRandomEnemyType();
                 var speed = Globals.Randomizer.Next(300, 350 + 1);
-                var enemy = (Enemy)Activator.CreateInstance(PickRandomEnemyType(), spawnPosition, speed, 1f);
+
+                if (enemyType == typeof(Bon))
+                    speed = Globals.Randomizer.Next(400, 500 + 1);
+                    
+                var enemy = (Enemy)Activator.CreateInstance(enemyType, spawnPosition, speed, 1f);
+
                 CurrentEnemies.Add(enemy);
+
+                //timer.Interval = spawnFrequencyBuffer;
                 timer.Reset();
             };
         }
@@ -49,7 +58,7 @@ namespace EndlessFight.Controllers
         {
             HandleSpawning();
             HandleCollision();
-            HandleDifficulty(gameTime);
+            HandleDifficulty();
 
             CurrentEnemies.ForEach(enemy => enemy.Update());
             for (var i = 0; i < CurrentEnemies.Count; i++)
@@ -83,14 +92,14 @@ namespace EndlessFight.Controllers
             return randomValue;
         }
 
-        private static void HandleDifficulty(GameTime gameTime)
+        private static void HandleDifficulty()
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            difficultyInterval += delta;
+            difficultyInterval += Globals.ElapsedSeconds;
             if (difficultyInterval > Globals.TimeToChengeDifficulty)
             {
                 difficultyInterval = 0;
-                spawnFrequencyBuffer -= (spawnFrequencyBuffer <= Globals.MaxDifficult) ? 0 : Globals.DeltaDifficultChange;
+                spawnFrequencyBuffer -= (spawnFrequencyBuffer <= Globals.MaxDifficult) 
+                    ? 0 : Globals.DeltaDifficultChange;
             }
         }
 
@@ -100,8 +109,8 @@ namespace EndlessFight.Controllers
                 if (!CurrentEnemies[i].IsAlive)
                 {
                     var enemy = CurrentEnemies[i];
-                    var position = new Vector2(enemy.Position.X + enemy.HitBox.Width / 2 - 10,
-                        enemy.Position.Y + enemy.HitBox.Height / 2 - 10);
+                    var position = new Vector2(enemy.Position.X + enemy.HitBox.Width / 2,
+                        enemy.Position.Y + enemy.HitBox.Height / 2);
                     ExplosionContoller.CreateExplosion(position);
                     BonusesController.CreateBonus(position);
                     CurrentEnemies.RemoveAt(i);

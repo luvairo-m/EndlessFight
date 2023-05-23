@@ -12,11 +12,11 @@ namespace EndlessFight.GameStates
     public class GameState : State
     {
         /*
-         * 1. Исправить появление взрыва
          * 2. Добавить эффект использования хилки
          * 3. Добавить взрывы по всей карте, при использовании бомбы
          * 4. Исправить нарастание сложности
          * 5. Изменить скейлинг текстур бонусов
+         * 6. Изменить некоторые текстуры бонусов
          */
 
         #region Background
@@ -133,6 +133,8 @@ namespace EndlessFight.GameStates
                 { typeof(Mult3Bonus), new TextureDescription(x3Texture, 2) },
             };
 
+            EnemiesController.SpawnFrequency = 2f;
+
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
@@ -148,7 +150,6 @@ namespace EndlessFight.GameStates
             AudioController.PlayMusic(AudioController.mainTheme);
 
             Globals.enemyShoot = enemyShootSound;
-
             #endregion
         }
 

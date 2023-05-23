@@ -30,8 +30,14 @@ namespace EndlessFight.Controllers
         {
             var bonusType = PickRandomBonusType();
             if (bonusType != null)
-                CurrentBonuses.Add((Bonus)
-                    Activator.CreateInstance(bonusType, spawnPosition, BonusesTextures[bonusType]));
+            {
+                var bonus = (Bonus)Activator.CreateInstance(bonusType, spawnPosition, BonusesTextures[bonusType]);
+                var position = new Vector2(
+                    spawnPosition.X - bonus.HitBox.Width / 2,
+                    spawnPosition.Y - bonus.HitBox.Height / 2);
+                bonus.Position = position;
+                CurrentBonuses.Add(bonus);
+            }
         }
 
         private static Type PickRandomBonusType()
