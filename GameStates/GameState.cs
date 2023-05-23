@@ -132,8 +132,6 @@ namespace EndlessFight.GameStates
                 { typeof(Mult3Bonus), new TextureDescription(x3Texture, 15) },
             };
 
-            EnemiesController.SpawnFrequency = 2f;
-
             LivesController.LifeIconTexture = lifeIconTexture;
             ScoreController.ScoreFont = scoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;

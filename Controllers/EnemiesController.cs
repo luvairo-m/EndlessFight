@@ -8,18 +8,9 @@ namespace EndlessFight.Controllers
 {
     public static class EnemiesController
     {
-        public static float SpawnFrequency
-        {
-            get => spawnFrequency;
-            set => (spawnFrequency, spawnFrequencyBuffer) = (value, value);
-        }
-
         public static readonly List<Enemy> CurrentEnemies = new();
 
-        private static float spawnFrequencyBuffer;
-        private static float spawnFrequency;
-        private static float difficultyInterval = 0;
-
+        private static float spawnFrequency = 1.8f;
         private static readonly GrigoryTimer timer;
 
         private static readonly Dictionary<Type, int> enemiesCosts = new()
@@ -31,7 +22,7 @@ namespace EndlessFight.Controllers
 
         static EnemiesController()
         {
-            timer = new(1.8f);
+            timer = new(spawnFrequency);
             timer.Tick += () =>
             {
                 var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
