@@ -31,7 +31,7 @@ namespace EndlessFight.Controllers
 
         static EnemiesController()
         {
-            timer = new(0.7f);
+            timer = new(1.8f);
             timer.Tick += () =>
             {
                 var spawnPosition = CurrentEnemies.Count == 0 ? new Vector2(Globals.Randomizer.Next
@@ -58,7 +58,6 @@ namespace EndlessFight.Controllers
         {
             HandleSpawning();
             HandleCollision();
-            //HandleDifficulty();
 
             CurrentEnemies.ForEach(enemy => enemy.Update());
             for (var i = 0; i < CurrentEnemies.Count; i++)
