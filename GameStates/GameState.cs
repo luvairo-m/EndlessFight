@@ -11,13 +11,6 @@ namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
-        /*
-         * 2. Добавить эффект использования хилки
-         * 4. Исправить нарастание сложности
-         * 5. Изменить скейлинг текстур бонусов
-         * 6. Изменить некоторые текстуры бонусов
-         */
-
         #region Background
         private Background currentBackground;
         private Texture2D backgroundTexture;
