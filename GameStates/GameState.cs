@@ -11,6 +11,12 @@ namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
+        /*
+         * Анимация начала игры
+         * Смена цвета звёзд при достижении максимальной сложности
+         * Расширение паузы
+         */
+
         private Player player;
         private Vector2 playerSpawnPosition = new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200);
 
@@ -39,6 +45,8 @@ namespace EndlessFight.GameStates
                 PlayerTexture, BlasterTexture, exhaustAnimation);
 
             Globals.Player = player;
+            //Globals.HitPulsation = new NewPulsation((255, 0, 0), BackgroundTexture, 3f);
+            //Globals.HealPulsation = new NewPulsation((0, 255, 0), BackgroundTexture, 3f);
             Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture);
             Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture);
 
