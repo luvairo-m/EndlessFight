@@ -13,6 +13,8 @@ namespace EndlessFight.Controllers
         public static Audio pauseSound;
         public static Audio allDestroy;
         public static Audio pause;
+        public static Audio menu;
+        public static Audio loose;
 
         public static void PlayMusic(Audio audio)
         {

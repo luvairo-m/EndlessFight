@@ -41,6 +41,9 @@ namespace EndlessFight.GameStates
                 loadGameButton,
                 quitGameButton,
             };
+
+            AudioController.menu = new Audio(0.03f, "menu", MenuSound);
+            AudioController.PlayMusic(AudioController.menu);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -64,6 +67,7 @@ namespace EndlessFight.GameStates
 
         private void LoadGameButton_Click(object sender, EventArgs e)
         {
+            AudioController.menu.soundEffectInstance.Stop();
             Globals.MainGame.ChangeState();
         }
 
