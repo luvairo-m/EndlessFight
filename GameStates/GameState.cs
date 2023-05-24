@@ -47,10 +47,10 @@ namespace EndlessFight.GameStates
                 PlayerTexture, BlasterTexture, exhaustAnimation);
 
             Globals.Player = player;
-            //Globals.HitPulsation = new NewPulsation((255, 0, 0), BackgroundTexture, 3f);
-            //Globals.HealPulsation = new NewPulsation((0, 255, 0), BackgroundTexture, 3f);
-            Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture);
-            Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture);
+            Globals.HitPulsation = new NewPulsation((255, 0, 0), BackgroundTexture, 3f);
+            Globals.HealPulsation = new NewPulsation((0, 255, 0), BackgroundTexture, 3f);
+            //Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture);
+            //Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture);
 
             SetUpEnemies();
 
@@ -105,6 +105,7 @@ namespace EndlessFight.GameStates
 
             Globals.HitPulsation.Draw(spriteBatch);
             Globals.HealPulsation.Draw(spriteBatch);
+            
 
             if (showCountdown && !IsPaused)
             {
@@ -161,6 +162,7 @@ namespace EndlessFight.GameStates
                 {
                     Globals.HitPulsation.Update(gameTime);
                     Globals.HealPulsation.Update(gameTime);
+                    Globals.StartGamePulsation.Update(gameTime);
                     EnemiesController.Update(gameTime);
                     BulletsController.Update();
                     ExplosionContoller.Update();

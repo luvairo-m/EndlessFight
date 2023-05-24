@@ -67,15 +67,18 @@ namespace EndlessFight
                 currentBackground.Update();
 
             currentState.Update(gameTime);
+            Globals.StartGamePulsation.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+
             spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
 
             currentBackground.Draw(spriteBatch, graphics.GraphicsDevice);
             currentState.Draw(gameTime, spriteBatch);
+            Globals.StartGamePulsation.Draw(spriteBatch);
             base.Draw(gameTime);
 
             spriteBatch.End();
