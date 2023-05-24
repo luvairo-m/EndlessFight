@@ -85,6 +85,7 @@ namespace EndlessFight
 
             currentState.Draw(gameTime, spriteBatch);
             Globals.StartGamePulsation.Draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 
