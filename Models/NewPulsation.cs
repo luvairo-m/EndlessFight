@@ -9,7 +9,6 @@ namespace EndlessFight.Models
         private Color pulseColor;
         private (int r, int g, int b) pusleColorData;
 
-        //private float pulsingInterval = 0;
         private float pulsingInterval;
         private float pulsingIntervalBuffer;
 
@@ -41,7 +40,7 @@ namespace EndlessFight.Models
                 var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 pulsingInterval -= delta;
 
-                    pulsingInterval = pulsingIntervalBuffer;
+                pulsingInterval = pulsingIntervalBuffer;
 
                 if (goUp)
                 {

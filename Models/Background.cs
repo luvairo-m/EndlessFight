@@ -27,16 +27,16 @@ namespace EndlessFight.Models
     public class Background
     {
         public Texture2D StarTexture { get; private set; }
+        public static bool IsMaxDifficulty;
 
+        private readonly Color fillColor = Color.FromNonPremultiplied(20, 20, 20, 255);
         private readonly List<Star> stars = new();
-        private readonly Color color;
-        private const int spawnOffset = -15;
         private readonly GrigoryTimer timer;
+        private const int spawnOffset = -15;
 
-        public Background(Texture2D backgroundTexture, Color backgroundColor, float spawnFrequency)
+        public Background(Texture2D backgroundTexture, float spawnFrequency)
         {
             StarTexture = backgroundTexture;
-            color = backgroundColor;
             timer = new GrigoryTimer(spawnFrequency);
             timer.Tick += OnTimerTick;
         }
@@ -52,7 +52,7 @@ namespace EndlessFight.Models
 
         public void Draw(SpriteBatch spriteBatch, GraphicsDevice device)
         {
-            device.Clear(color);
+            device.Clear(fillColor);
             stars.ForEach(star =>
                 spriteBatch.Draw(StarTexture, 
                 new Rectangle((int)star.Position.X, (int)star.Position.Y, star.Size, star.Size),
@@ -64,7 +64,13 @@ namespace EndlessFight.Models
             for (var i = 0; i < 6; i++)
             {
                 var size = Globals.Randomizer.Next(2, 6);
-                var color = Globals.Randomizer.Next(0, 2) == 1 ? Color.White : Color.Gray;
+                Color color;
+
+                if (IsMaxDifficulty)
+                    color = Globals.Randomizer.Next(0, 2) == 1 ? Color.Red : Color.DarkRed;
+                else
+                    color = Globals.Randomizer.Next(0, 2) == 1 ? Color.White : Color.Gray;
+
                 stars.Add(new Star(Globals.Randomizer.Next(200, 300), size,
                     new(Globals.Randomizer.Next(spawnOffset, Game1.windowWidth), 0), color));
             }

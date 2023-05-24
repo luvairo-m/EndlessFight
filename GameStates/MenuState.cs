@@ -13,11 +13,17 @@ namespace EndlessFight.GameStates
     public class MenuState : State
     {
         private List<Component> components;
+        private string title = "Endless fight";
+        private Vector2 titleSize;
         
         public MenuState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics) 
             : base(game, contentManager, graphics) { } 
 
-        public override void LoadContent() => Initialize();
+        public override void LoadContent()
+        {
+            titleSize = TitleFont.MeasureString(title);
+            Initialize();
+        }
 
         public override void Initialize()
         {
@@ -27,14 +33,14 @@ namespace EndlessFight.GameStates
                                         Game1.windowHeight / 2 - StartButtonTexture.Height - 20),
             };
 
-            loadGameButton.Click += LoadGameButton_Click;
+            loadGameButton.Click += OnStartButtonClicked;
 
             var quitGameButton = new Button(QuitButtonTexture)
             {
                 Position = new Vector2(Game1.windowWidth / 2 - QuitButtonTexture.Width / 2, Game1.windowHeight / 2 + 30),
             };
 
-            quitGameButton.Click += QuitGameButton_Click;
+            quitGameButton.Click += OnQuitButtonClicked;
 
             components = new List<Component>()
             {
@@ -42,13 +48,14 @@ namespace EndlessFight.GameStates
                 quitGameButton,
             };
 
-            AudioController.menu = new Audio(0.3f, "menu", MenuSound);
+            AudioController.menu = new Audio(0.1f, "menu", MenuSound);
             AudioController.PlayMusic(AudioController.menu);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(TitleFont, "EndlessFight", new Vector2(55, 174), Color.White);
+            spriteBatch.DrawString(TitleFont, title,
+                new Vector2(Game1.windowWidth / 2 - titleSize.X / 2, 174), Color.White);
 
             foreach (var component in components)
                 component.Draw(gameTime, spriteBatch); 
@@ -65,13 +72,13 @@ namespace EndlessFight.GameStates
 
         public override void OnExit() { }
 
-        private void LoadGameButton_Click(object sender, EventArgs e)
+        private void OnStartButtonClicked(object sender, EventArgs e)
         {
             AudioController.menu.soundEffectInstance.Stop();
             Globals.MainGame.ChangeState();
         }
 
-        private void QuitGameButton_Click(object sender, EventArgs e)
+        private void OnQuitButtonClicked(object sender, EventArgs e)
         {
             Game.Exit();
         }

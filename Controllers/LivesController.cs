@@ -8,7 +8,7 @@ namespace EndlessFight.Controllers
     {
         public static Texture2D LifeIconTexture;
         private const int iconsSpacing = 15;
-        private const int iconWidth = 30;
+        private const int iconWidth = 35;
         
         public static void Draw(SpriteBatch spriteBatch)
         {

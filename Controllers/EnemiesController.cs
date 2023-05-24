@@ -87,8 +87,10 @@ namespace EndlessFight.Controllers
 
         private static void HandleDifficulty()
         {
-            timer.Interval -= (timer.Interval <= Globals.MaxDifficult)
-                ? 0 : Globals.DeltaDifficultChange*timer.Interval;
+            if (timer.Interval > Globals.MaxDifficult)
+                timer.Interval -= Globals.DeltaDifficultChange * timer.Interval;
+            else
+                Background.IsMaxDifficulty = true;
         }
 
         private static void DeleteDeadOnes()
