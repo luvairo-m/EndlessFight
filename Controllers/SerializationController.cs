@@ -12,7 +12,7 @@ namespace EndlessFight.Controllers
             if (!File.Exists(Globals.SerializationPath))
                 File.WriteAllText(Globals.SerializationPath, 
                     JsonSerializer.Serialize(new SerializationOptions
-                    (ScoreController.Score, ScoreController.Score)));
+                    (ScoreController.Score)));
             else
             {
                 SerializationOptions serialization = JsonSerializer
@@ -21,7 +21,6 @@ namespace EndlessFight.Controllers
                 if (ScoreController.Score > serialization.BestScore)
                     serialization.BestScore = ScoreController.Score;
 
-                serialization.AllScore += ScoreController.Score;
                 File.WriteAllText(Globals.SerializationPath, JsonSerializer.Serialize(serialization));
             }
         }
