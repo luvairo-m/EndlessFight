@@ -5,6 +5,8 @@ namespace EndlessFight.Controllers
 {
     public static class SerializationController
     {
+        public static int BestScore;
+
         public static void MakeSerialization()
         {
             if (!File.Exists(Globals.SerializationPath))
@@ -34,7 +36,7 @@ namespace EndlessFight.Controllers
             {
                 SerializationOptions serialization = JsonSerializer
                     .Deserialize<SerializationOptions>(File.ReadAllText(Globals.SerializationPath));
-
+                BestScore = serialization.BestScore;    
                 return serialization.BestScore;
             }
 

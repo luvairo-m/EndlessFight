@@ -13,7 +13,8 @@ namespace EndlessFight.Controllers
             var line = $"{new string('0', 6 - MeasureNumber(Score))}{Score}";
             var lineSize = ScoreFont.MeasureString(line);
             spriteBatch.DrawString(ScoreFont, line,
-                new(Game1.windowWidth - 20 - lineSize.X, 20), Color.White);
+                new(Game1.windowWidth - 20 - lineSize.X, 20),
+                SerializationController.BestScore >= Score ? Color.White : Color.Gold);
         }
 
         private static int MeasureNumber(int number)

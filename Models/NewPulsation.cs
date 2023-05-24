@@ -10,7 +10,6 @@ namespace EndlessFight.Models
         private Color pulseColor;
         private (int r, int g, int b) pusleColorData;
 
-        //private float pulsingInterval = 0;
         private float pulsingInterval;
         private float pulsingIntervalBuffer;
 

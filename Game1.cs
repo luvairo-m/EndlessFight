@@ -54,7 +54,7 @@ namespace EndlessFight
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             gameResources.InitializeResources();
-            currentBackground = new Background(BackgroundTexture, Color.FromNonPremultiplied(20, 20, 20, 255), 1f);
+            currentBackground = new Background(BackgroundTexture, 1f);
             currentState = menuState;
             currentState.LoadContent();
         }
@@ -75,13 +75,17 @@ namespace EndlessFight
         {
 
             spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
-
             currentBackground.Draw(spriteBatch, graphics.GraphicsDevice);
+
+            //if (GameState.IsPaused)
+            //{
+            //    spriteBatch.Draw(BackgroundTexture, new Rectangle(0, 0, windowWidth, windowHeight),
+            //        Color.FromNonPremultiplied(0, 0, 0, 185));
+            //}
+
             currentState.Draw(gameTime, spriteBatch);
             Globals.StartGamePulsation.Draw(spriteBatch);
             base.Draw(gameTime);
-
-            spriteBatch.End();
         }
 
         public void ChangeState()

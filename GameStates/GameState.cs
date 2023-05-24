@@ -13,17 +13,17 @@ namespace EndlessFight.GameStates
     {
         /*
          * Анимация начала игры
-         * Смена цвета звёзд при достижении максимальной сложности
          * Расширение паузы
-         * Эффект достижения макс. сложности
-         * Подсветка рекорда жёлтым при его побитии
+         * Анимация проигрыша
          */
 
         private Player player;
         private Vector2 playerSpawnPosition = new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200);
+        private Color pauseColor = Color.FromNonPremultiplied(0, 0, 0, 200);
 
         #region Game starting animation
         public static bool IsPaused;
+        private bool isEscapeUp;
         private bool handleMovement;
         private bool showCountdown;
         private float countDownFrequency = 1f;
@@ -71,7 +71,7 @@ namespace EndlessFight.GameStates
             };
 
             LivesController.LifeIconTexture = PlayerLifeTexture;
-            ScoreController.ScoreFont = ScoreFont;
+            ScoreController.ScoreFont = InGameScoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
             EnemiesController.SetTimer();
 
@@ -133,12 +133,15 @@ namespace EndlessFight.GameStates
 
             if (IsPaused)
             {
-                var (line1, line2) = ("game is paused", "Press Enter to continue");
-                var (size1, size2) = (PauseFont.MeasureString(line1), PauseFont.MeasureString(line2));
+                spriteBatch.Draw(BackgroundTexture, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight), pauseColor);
+                var (line1, line2, line3) = ("game is paused", "Enter to continue", "Escape to leave");
+                var (size1, size2, size3) = (PauseFont.MeasureString(line1), PauseFont.MeasureString(line2), PauseFont.MeasureString(line3));
                 spriteBatch.DrawString(PauseFont, line1,
-                    new(Game1.windowWidth / 2 - size1.X / 2, Game1.windowHeight / 2 - 40), Color.White);
+                    new(Game1.windowWidth / 2 - size1.X / 2, Game1.windowHeight / 2 - size1.Y * 3), Color.White);
                 spriteBatch.DrawString(PauseFont, line2,
-                    new(Game1.windowWidth / 2 - size2.X / 2, Game1.windowHeight / 2), Color.White);
+                    new(Game1.windowWidth / 2 - size2.X / 2, Game1.windowHeight / 2 - 40), Color.White);
+                spriteBatch.DrawString(PauseFont, line3,
+                    new(Game1.windowWidth / 2 - size3.X / 2, Game1.windowHeight / 2), Color.White);
             }
         }
 
@@ -146,14 +149,24 @@ namespace EndlessFight.GameStates
         {
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            if (keyboardState.IsKeyDown(Keys.Escape) && !IsPaused)
             {
                 AudioController.mainTheme.soundEffectInstance.Pause();
-                if (!IsPaused) 
-                    AudioController.PlayEffect(AudioController.pause);
+                AudioController.PlayEffect(AudioController.pause);
                 IsPaused = true;
+                return;
             }
-     
+
+            if (keyboardState.IsKeyUp(Keys.Escape) && IsPaused)
+                isEscapeUp = true;
+
+            if (keyboardState.IsKeyDown(Keys.Escape) && isEscapeUp)
+            {
+                Globals.MainGame.ChangeState();
+                IsPaused = false;
+                return;
+            }
+
             if (!IsPaused)
             {
                 player.Update(gameTime, handleMovement);
@@ -180,10 +193,9 @@ namespace EndlessFight.GameStates
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    if (IsPaused)
-                        AudioController.PlayEffect(AudioController.pause);
+                    AudioController.PlayEffect(AudioController.pause);
                     AudioController.PlayMusic(AudioController.mainTheme);
-                    IsPaused = false;
+                    (isEscapeUp, IsPaused) = (false, false);
                 }
             }
         }
@@ -195,7 +207,8 @@ namespace EndlessFight.GameStates
             countDownFrequency = 1f;
             countDownBuffer = 1f;
             countDownCounter = 3;
-
+            Background.IsMaxDifficulty = false;
+            isEscapeUp = false;
             SerializationController.MakeSerialization();
             AudioController.PlayEffect(AudioController.loose);
         }
