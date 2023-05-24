@@ -12,6 +12,7 @@ namespace EndlessFight.GameStates
     public class GameState : State
     {
         private Player player;
+        private Vector2 playerSpawnPosition = new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200);
 
         #region Game starting animation
         public static bool IsPaused;
@@ -29,8 +30,12 @@ namespace EndlessFight.GameStates
 
         public override void Initialize()
         {
-            var exhaustAnimation = new SpriteAnimation(ExhaustTexture, 2, 4) { Scale = 4f };
-            player = new Player(new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200), Globals.PlayerBaseSpeed,
+            var exhaustAnimation = new SpriteAnimation(ExhaustTexture, 2, 4)
+            {
+                Scale = 4f,
+                Position = playerSpawnPosition
+            };
+            player = new Player(playerSpawnPosition, Globals.PlayerBaseSpeed,
                 PlayerTexture, BlasterTexture, exhaustAnimation);
 
             Globals.Player = player;
@@ -42,7 +47,7 @@ namespace EndlessFight.GameStates
             #region Controllers set up
             var explosionTextures = new[]
             {
-                new TextureDescription(SparkleTexture, 5),
+                new TextureDescription(SparkleExplosionTexture, 5),
                 new TextureDescription(ExplosionTexture, 5)
             };
 
@@ -50,12 +55,12 @@ namespace EndlessFight.GameStates
             {
                 { typeof(HeartBonus), new TextureDescription(HeartTexture, 6) },
                 { typeof(BombBonus), new TextureDescription(BombTexture, 3) },
-                { typeof(Mult1Bonus), new TextureDescription(X1Texture, 15) },
-                { typeof(Mult2Bonus), new TextureDescription(X2Texture, 15) },
-                { typeof(Mult3Bonus), new TextureDescription(X3Texture, 15) },
+                { typeof(Mult1Bonus), new TextureDescription(Mult1BonusTexture, 15) },
+                { typeof(Mult2Bonus), new TextureDescription(Mult2BonusTexture, 15) },
+                { typeof(Mult3Bonus), new TextureDescription(Mult3BonusTexture, 15) },
             };
 
-            LivesController.LifeIconTexture = LifeIconTexture;
+            LivesController.LifeIconTexture = PlayerLifeTexture;
             ScoreController.ScoreFont = ScoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
 

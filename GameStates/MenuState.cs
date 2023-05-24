@@ -60,11 +60,7 @@ namespace EndlessFight.GameStates
 
         public override void Update(GameTime gameTime) => components.ForEach(c => c.Update(gameTime));
 
-        // TODO: отрефакторить это место
-        public override void OnExit()
-        {
-
-        }
+        public override void OnExit() { }
 
         private void LoadGameButton_Click(object sender, EventArgs e)
         {

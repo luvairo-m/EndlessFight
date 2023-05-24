@@ -13,7 +13,7 @@ namespace EndlessFight
         #region Player
         public static Texture2D PlayerTexture;
         public static Texture2D ExhaustTexture;
-        public static Texture2D LifeIconTexture;
+        public static Texture2D PlayerLifeTexture;
         #endregion
 
         #region Menu Buttons and fonts
@@ -31,7 +31,7 @@ namespace EndlessFight
 
         #region Effects
         public static Texture2D ExplosionTexture;
-        public static Texture2D SparkleTexture;
+        public static Texture2D SparkleExplosionTexture;
         #endregion
 
         #region Fonts
@@ -43,12 +43,12 @@ namespace EndlessFight
         #region Bonuses
         public static Texture2D HeartTexture;
         public static Texture2D BombTexture;
-        public static Texture2D X1Texture;
-        public static Texture2D X2Texture;
-        public static Texture2D X3Texture;
+        public static Texture2D Mult1BonusTexture;
+        public static Texture2D Mult2BonusTexture;
+        public static Texture2D Mult3BonusTexture;
         #endregion
 
-        #region Enemies and Controller
+        #region Enemies Textures
         public static Texture2D AlanTexture;
         public static Texture2D BonTexture;
         public static Texture2D LipsTexture;
@@ -72,6 +72,13 @@ namespace EndlessFight
 
         public void InitializeResources()
         {
+            InitializeTextures();
+            InitializeFonts();
+            InitializeSounds();
+        }
+
+        private void InitializeTextures()
+        {
             BackgroundTexture = contentManager.Load<Texture2D>("Effects/star");
             PlayerTexture = contentManager.Load<Texture2D>("Player/ship");
             ExhaustTexture = contentManager.Load<Texture2D>("Player/boosters");
@@ -80,18 +87,30 @@ namespace EndlessFight
             BonTexture = contentManager.Load<Texture2D>("Enemies/bon");
             LipsTexture = contentManager.Load<Texture2D>("Enemies/lips");
             ExplosionTexture = contentManager.Load<Texture2D>("Effects/explosion");
-            SparkleTexture = contentManager.Load<Texture2D>("Effects/sparkle");
+            SparkleExplosionTexture = contentManager.Load<Texture2D>("Effects/sparkle");
             LipsShootTexture = contentManager.Load<Texture2D>("Enemies/alan-shoot");
             AlanShootTexture = contentManager.Load<Texture2D>("Enemies/bon-shoot");
+            BombTexture = contentManager.Load<Texture2D>("Bonuses/bomb");
+            HeartTexture = contentManager.Load<Texture2D>("Bonuses/heart");
+            PlayerLifeTexture = contentManager.Load<Texture2D>("UI/life-icon");
+            Mult1BonusTexture = contentManager.Load<Texture2D>("Bonuses/shoot1x");
+            Mult2BonusTexture = contentManager.Load<Texture2D>("Bonuses/shoot2x");
+            Mult3BonusTexture = contentManager.Load<Texture2D>("Bonuses/shoot3x");
+            StartButtonTexture = contentManager.Load<Texture2D>("Buttons/start-button");
+            QuitButtonTexture = contentManager.Load<Texture2D>("Buttons/quit-button");
+        }
+
+        private void InitializeFonts()
+        {
             ScoreFont = contentManager.Load<SpriteFont>("Fonts/score-font");
             PauseFont = contentManager.Load<SpriteFont>("Fonts/pause-font");
             CountDownFont = contentManager.Load<SpriteFont>("Fonts/countdown-font");
-            BombTexture = contentManager.Load<Texture2D>("Bonuses/bomb");
-            HeartTexture = contentManager.Load<Texture2D>("Bonuses/heart");
-            LifeIconTexture = contentManager.Load<Texture2D>("UI/life-icon");
-            X1Texture = contentManager.Load<Texture2D>("Bonuses/shoot1x");
-            X2Texture = contentManager.Load<Texture2D>("Bonuses/shoot2x");
-            X3Texture = contentManager.Load<Texture2D>("Bonuses/shoot3x");
+            TitleFont = contentManager.Load<SpriteFont>("Fonts/name-game-font");
+            RecordFont = contentManager.Load<SpriteFont>("Fonts/score-font");
+        }
+
+        private void InitializeSounds()
+        {
             MainThemeSound = contentManager.Load<SoundEffect>("Sounds/mainTheme1");
             ShootSound = contentManager.Load<SoundEffect>("Sounds/hit2");
             HitSound = contentManager.Load<SoundEffect>("Sounds/random");
@@ -100,10 +119,6 @@ namespace EndlessFight
             EnemyShootSound = contentManager.Load<SoundEffect>("Sounds/something1");
             PauseSound = contentManager.Load<SoundEffect>("Sounds/pause");
             AllDestroySound = contentManager.Load<SoundEffect>("Sounds/shoot1");
-            TitleFont = contentManager.Load<SpriteFont>("Fonts/name-game-font");
-            StartButtonTexture = contentManager.Load<Texture2D>("Buttons/start-button");
-            QuitButtonTexture = contentManager.Load<Texture2D>("Buttons/quit-button");
-            RecordFont = contentManager.Load<SpriteFont>("Fonts/score-font");
         }
     }
 }
