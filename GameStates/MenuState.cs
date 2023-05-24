@@ -49,7 +49,11 @@ namespace EndlessFight.GameStates
             };
 
             Globals.StartGamePulsation = new Pulsation((0, 0, 0), BackgroundTexture, 22f);
-            AudioController.menu = new Audio(0.09f, "menu", MenuSound);
+            AudioController.menu = new Audio(0.3f, "menu", MenuSound);
+            AudioController.allDestroy = new Audio(0.4f, "allDestroy", AllDestroySound);
+            AudioController.button = new Audio(0.7f, "button", ButtonSound);
+            AudioController.pause = new Audio(0.8f, "pause", PauseSound);
+            AudioController.pauseSound = new Audio(0.6f, "pause", PauseSound);
             AudioController.PlayMusic(AudioController.menu);
         }
 
@@ -84,10 +88,12 @@ namespace EndlessFight.GameStates
         {
             Globals.StartGamePulsation.Pulse();
             AudioController.menu.soundEffectInstance.Stop();
+            AudioController.PlayEffect(AudioController.pauseSound);
         }
 
         private void OnQuitButtonClicked(object sender, EventArgs e)
         {
+            AudioController.PlayEffect(AudioController.button);
             Game.Exit();
         }
     }
