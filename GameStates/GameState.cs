@@ -71,6 +71,7 @@ namespace EndlessFight.GameStates
             LivesController.LifeIconTexture = PlayerLifeTexture;
             ScoreController.ScoreFont = ScoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
+            EnemiesController.SetTimer();
 
             AudioController.mainTheme = new Audio(0.15f, "mainTheme", MainThemeSound);
             AudioController.shoot = new Audio(0.15f, "shoot", ShootSound);
@@ -81,6 +82,7 @@ namespace EndlessFight.GameStates
             AudioController.pauseSound = new Audio(0.08f, "pause", PauseSound);
             AudioController.allDestroy = new Audio(0.4f, "allDestroy", AllDestroySound);
             AudioController.pause = new Audio(0.8f, "pause", PauseSound);
+            AudioController.loose = new Audio(0.8f, "loose", LooseSound);
             AudioController.PlayMusic(AudioController.mainTheme);
 
             Globals.EnemyShoot = EnemyShootSound;
@@ -191,6 +193,7 @@ namespace EndlessFight.GameStates
             countDownCounter = 3;
 
             SerializationController.MakeSerialization();
+            AudioController.PlayEffect(AudioController.loose);
         }
 
         private void SetUpEnemies()

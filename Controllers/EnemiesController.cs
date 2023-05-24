@@ -60,6 +60,11 @@ namespace EndlessFight.Controllers
 
         public static void Draw(SpriteBatch spriteBatch) => CurrentEnemies.ForEach(enemy => enemy.Draw(spriteBatch));
 
+        public static void SetTimer()
+        {
+            timer.Interval = spawnFrequency;
+        }
+
         private static void HandleCollision()
         {
             for (var i = 0; i < CurrentEnemies.Count; i++)

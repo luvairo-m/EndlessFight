@@ -63,6 +63,8 @@ namespace EndlessFight
         public static SoundEffect EnemyShootSound;
         public static SoundEffect AllDestroySound;
         public static SoundEffect PauseSound;
+        public static SoundEffect MenuSound;
+        public static SoundEffect LooseSound;
         #endregion
 
         private ContentManager contentManager;
@@ -119,6 +121,8 @@ namespace EndlessFight
             EnemyShootSound = contentManager.Load<SoundEffect>("Sounds/something1");
             PauseSound = contentManager.Load<SoundEffect>("Sounds/pause");
             AllDestroySound = contentManager.Load<SoundEffect>("Sounds/shoot1");
+            MenuSound = contentManager.Load<SoundEffect>("Sounds/menu-theme");
+            LooseSound = contentManager.Load<SoundEffect>("Sounds/something2");
         }
     }
 }
