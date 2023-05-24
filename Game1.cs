@@ -63,7 +63,7 @@ namespace EndlessFight
         {
             Globals.Update(gameTime);
 
-            if (!GameState.IsPaused)
+            if (!GameState.IsPaused && !GameState.IsGameOver)
                 currentBackground.Update();
 
             currentState.Update(gameTime);

@@ -1,4 +1,5 @@
-﻿using EndlessFight.Models;
+﻿using EndlessFight.GameStates;
+using EndlessFight.Models;
 
 namespace EndlessFight.Controllers
 {
@@ -33,16 +34,7 @@ namespace EndlessFight.Controllers
             }
 
             if (Globals.Player.CurrentLifes <= 0)
-            {
-                AudioController.mainTheme.soundEffectInstance.Stop();
-                Globals.MainGame.ChangeState();
-                EnemiesController.CurrentEnemies.Clear();
-                BulletsController.CurrentBullets.Clear();
-                ExplosionContoller.CurrentExplosions.Clear();
-                BonusesController.CurrentBonuses.Clear();
-                ScoreController.Score = 0;
-                // Сохранить счёт игрока
-            }
+                GameState.IsGameOver = true;
         }
     }
 }

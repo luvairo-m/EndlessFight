@@ -21,6 +21,7 @@ namespace EndlessFight
         public static Texture2D QuitButtonTexture;
         public static SpriteFont TitleFont;
         public static SpriteFont RecordFont;
+        public static Texture2D GameOverLabel;
         #endregion
 
         #region Bullets
@@ -101,6 +102,7 @@ namespace EndlessFight
             Mult3BonusTexture = contentManager.Load<Texture2D>("Bonuses/shoot3x");
             StartButtonTexture = contentManager.Load<Texture2D>("Buttons/start-button");
             QuitButtonTexture = contentManager.Load<Texture2D>("Buttons/quit-button");
+            GameOverLabel = contentManager.Load<Texture2D>("UI/game-over");
         }
 
         private void InitializeFonts()

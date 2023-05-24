@@ -23,6 +23,7 @@ namespace EndlessFight.GameStates
 
         #region Game starting animation
         public static bool IsPaused;
+        public static bool IsGameOver;
         private bool isEscapeUp;
         private bool handleMovement;
         private bool showCountdown;
@@ -142,58 +143,68 @@ namespace EndlessFight.GameStates
                 spriteBatch.DrawString(PauseFont, line3,
                     new(Game1.windowWidth / 2 - size3.X / 2, Game1.windowHeight / 2), Color.White);
             }
+
+            if (IsGameOver)
+            {
+                AudioController.mainTheme.soundEffectInstance.Stop();
+                AudioController.PlayEffect(AudioController.loose);
+                spriteBatch.Draw(GameOverLabel, new Vector2(0, 0), Color.White);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Escape) && !IsPaused)
+            if (!IsGameOver)
             {
-                AudioController.mainTheme.soundEffectInstance.Pause();
-                AudioController.PlayEffect(AudioController.pause);
-                IsPaused = true;
-                return;
-            }
-
-            if (keyboardState.IsKeyUp(Keys.Escape) && IsPaused)
-                isEscapeUp = true;
-
-            if (keyboardState.IsKeyDown(Keys.Escape) && isEscapeUp)
-            {
-                Globals.MainGame.ChangeState();
-                IsPaused = false;
-                return;
-            }
-
-            if (!IsPaused)
-            {
-                player.Update(gameTime, handleMovement);
-
-                if (handleMovement)
+                if (keyboardState.IsKeyDown(Keys.Escape) && !IsPaused)
                 {
-                    Globals.HitPulsation.Update(gameTime);
-                    Globals.HealPulsation.Update(gameTime);
-                    EnemiesController.Update(gameTime);
-                    BulletsController.Update();
-                    ExplosionContoller.Update();
-                    BonusesController.Update();
-                    LifeController.ControlLifeStatus();
-                }
-                else if (!showCountdown)
-                {
-                    player.Position += new Vector2(0, -1) * 150 * Globals.ElapsedSeconds;
-                    if (player.Position.Y <= Game1.windowHeight / 1.3)
-                        showCountdown = true;
-                }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDown(Keys.Enter))
-                {
+                    AudioController.mainTheme.soundEffectInstance.Pause();
                     AudioController.PlayEffect(AudioController.pause);
-                    AudioController.PlayMusic(AudioController.mainTheme);
-                    (isEscapeUp, IsPaused) = (false, false);
+                    IsPaused = true;
+                    return;
+                }
+
+                if (keyboardState.IsKeyUp(Keys.Escape) && IsPaused)
+                    isEscapeUp = true;
+
+                if (keyboardState.IsKeyDown(Keys.Escape) && isEscapeUp)
+                {
+                    Globals.MainGame.ChangeState();
+                    IsPaused = false;
+                    return;
+                }
+
+                if (!IsPaused)
+                {
+                    player.Update(gameTime, handleMovement);
+
+                    if (handleMovement)
+                    {
+                        Globals.HitPulsation.Update(gameTime);
+                        Globals.HealPulsation.Update(gameTime);
+                        EnemiesController.Update(gameTime);
+                        BulletsController.Update();
+                        ExplosionContoller.Update();
+                        BonusesController.Update();
+                        LifeController.ControlLifeStatus();
+                    }
+                    else if (!showCountdown)
+                    {
+                        player.Position += new Vector2(0, -1) * 150 * Globals.ElapsedSeconds;
+                        if (player.Position.Y <= Game1.windowHeight / 1.3)
+                            showCountdown = true;
+                    }
+                }
+                else
+                {
+                    if (keyboardState.IsKeyDown(Keys.Enter))
+                    {
+                        AudioController.PlayEffect(AudioController.pause);
+                        AudioController.PlayMusic(AudioController.mainTheme);
+                        (isEscapeUp, IsPaused) = (false, false);
+                    }
                 }
             }
         }
@@ -207,8 +218,13 @@ namespace EndlessFight.GameStates
             countDownCounter = 3;
             Background.IsMaxDifficulty = false;
             isEscapeUp = false;
+            //Globals.MainGame.ChangeState();
+            EnemiesController.CurrentEnemies.Clear();
+            BulletsController.CurrentBullets.Clear();
+            ExplosionContoller.CurrentExplosions.Clear();
+            BonusesController.CurrentBonuses.Clear();
+            ScoreController.Score = 0;
             SerializationController.MakeSerialization();
-            AudioController.PlayEffect(AudioController.loose);
         }
 
         private void SetUpEnemies()
