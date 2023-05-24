@@ -77,7 +77,6 @@ namespace EndlessFight.GameStates
         {
             Globals.StartGamePulsation.Pulse();
             AudioController.menu.soundEffectInstance.Stop();
-            //Globals.MainGame.ChangeState();
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
