@@ -9,8 +9,9 @@ namespace EndlessFight
     {
         public static Game1 MainGame;
         public static Random Randomizer = new();
-        public static Pulsation HitPulsation;
-        public static Pulsation HealPulsation;
+        public static NewPulsation HitPulsation;
+        public static NewPulsation HealPulsation;
+        public static NewPulsation StartGamePulsation;
         public static Player Player;
         public static SoundEffect EnemyShoot;
         public static float ElapsedSeconds;

@@ -48,7 +48,8 @@ namespace EndlessFight.GameStates
                 quitGameButton,
             };
 
-            AudioController.menu = new Audio(0.1f, "menu", MenuSound);
+            Globals.StartGamePulsation = new NewPulsation((0, 0, 0), BackgroundTexture, 22f);
+            AudioController.menu = new Audio(0.3f, "menu", MenuSound);
             AudioController.PlayMusic(AudioController.menu);
         }
 
@@ -68,14 +69,21 @@ namespace EndlessFight.GameStates
                 Color.White);
         }
 
-        public override void Update(GameTime gameTime) => components.ForEach(c => c.Update(gameTime));
+        public override void Update(GameTime gameTime)
+        {
+            if (Globals.StartGamePulsation.alphaValue >= 218)
+            {
+                Globals.MainGame.ChangeState();
+            }
+            components.ForEach(c => c.Update(gameTime));
+        }
 
-        public override void OnExit() { }
+        public override void OnExit() {  }
 
         private void OnStartButtonClicked(object sender, EventArgs e)
         {
+            Globals.StartGamePulsation.Pulse();
             AudioController.menu.soundEffectInstance.Stop();
-            Globals.MainGame.ChangeState();
         }
 
         private void OnQuitButtonClicked(object sender, EventArgs e)
