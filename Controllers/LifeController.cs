@@ -27,13 +27,15 @@ namespace EndlessFight.Controllers
 
         public static void OnPlayerDamaged()
         {
-            if (Globals.Player.CurrentLifes > 0)
+            var player = Globals.Player;
+
+            if (player.CurrentLifes > 0)
             {
-                Globals.Player.CurrentLifes--;
+                player.CurrentLifes--;
                 Globals.HitPulsation.Pulse();
             }
 
-            if (Globals.Player.CurrentLifes <= 0)
+            if (player.CurrentLifes <= 0)
             {
                 AudioController.mainTheme.soundEffectInstance.Stop();
                 AudioController.PlayEffect(AudioController.loose);
