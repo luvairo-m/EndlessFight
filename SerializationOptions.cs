@@ -9,12 +9,10 @@ namespace EndlessFight
     public class SerializationOptions
     {
         public int BestScore { get; set; }
-        public int AllScore { get; set; }
 
-        public SerializationOptions(int bestScore, int allScore)
+        public SerializationOptions(int bestScore)
         {
             BestScore = bestScore;
-            AllScore = allScore;
         }
     }
 }
