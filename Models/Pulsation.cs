@@ -5,20 +5,25 @@ namespace EndlessFight.Models
 {
     public class Pulsation
     {
+        public int alphaValue;
+
         private Texture2D blankTexture;
         private Color pulseColor;
         private (int r, int g, int b) pusleColorData;
-        private float pulsingInterval = 0;
 
         private bool goUp = true;
         private bool goDown;
         private bool IsPulsing;
 
-        public Pulsation((int r, int g, int b) colorData, Texture2D blankTexture)
+        private float realInterval = 0;
+        private float duration;
+
+        public Pulsation((int r, int g, int b) colorData, Texture2D blankTexture, float duration)
         {
             this.blankTexture = blankTexture;
             pulseColor = Color.FromNonPremultiplied(colorData.r, colorData.g, colorData.b, 1);
             pusleColorData = colorData;
+            this.duration = duration;
         }
 
         public void Draw(SpriteBatch spriteBatch) =>
@@ -27,36 +32,44 @@ namespace EndlessFight.Models
 
         public void Update(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
             if (IsPulsing)
             {
+                var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                var change = ((3000) / duration) * (delta);
+
                 if (goUp)
                 {
-                    pulsingInterval += delta;
-
-                    if (pulsingInterval >= 255)
+                    realInterval += change;
+                    if (alphaValue <= 220)
+                    {
+                        alphaValue = (int) (realInterval + 1);
+                    }
+                    else
+                    {
                         (goUp, goDown) = (false, true);
-
-                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, (int)pulsingInterval);
+                        realInterval = 255f;
+                    }
+                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, alphaValue);
                 }
                 else if (goDown)
                 {
-                    pulsingInterval -= delta;
-
-                    if (pulsingInterval <= 0)
+                    realInterval -= change;
+                    if (alphaValue >= 0)
                     {
-                        pulsingInterval = 0;
+                        alphaValue = (int)realInterval + 1;
+                    }
+                    else
+                    {
                         (goUp, goDown) = (true, false);
+                        realInterval = 0f;
                         IsPulsing = false;
                     }
-
-                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, (int)pulsingInterval);
+                    pulseColor = Color.FromNonPremultiplied(pusleColorData.r, pusleColorData.g, pusleColorData.b, alphaValue);
                 }
             }
         }
 
         public void Pulse() =>
-            (goUp, goDown, IsPulsing, pulsingInterval) = (true, false, true, 0);
+            (goUp, goDown, IsPulsing) = (true, false, true);
     }
 }

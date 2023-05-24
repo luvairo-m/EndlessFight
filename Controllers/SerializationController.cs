@@ -39,7 +39,6 @@ namespace EndlessFight.Controllers
                 BestScore = serialization.BestScore;    
                 return serialization.BestScore;
             }
-
         }
     }
 }

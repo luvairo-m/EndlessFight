@@ -48,8 +48,8 @@ namespace EndlessFight.GameStates
                 PlayerTexture, BlasterTexture, exhaustAnimation);
 
             Globals.Player = player;
-            Globals.HitPulsation = new NewPulsation((255, 0, 0), BackgroundTexture, 3f);
-            Globals.HealPulsation = new NewPulsation((0, 255, 0), BackgroundTexture, 3f);
+            Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture, 3f);
+            Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture, 3f);
             //Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture);
             //Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture);
 
