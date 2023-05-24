@@ -42,7 +42,7 @@ namespace EndlessFight.GameStates
                 quitGameButton,
             };
 
-            AudioController.menu = new Audio(0.03f, "menu", MenuSound);
+            AudioController.menu = new Audio(0.3f, "menu", MenuSound);
             AudioController.PlayMusic(AudioController.menu);
         }
 
