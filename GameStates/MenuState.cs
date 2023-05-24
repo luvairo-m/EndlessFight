@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using EndlessFight.Models;
+using EndlessFight.Controllers;
 
 using static EndlessFight.Resources;
 
@@ -47,11 +48,12 @@ namespace EndlessFight.GameStates
             spriteBatch.DrawString(TitleFont, "EndlessFight", new Vector2(55, 174), Color.White);
 
             foreach (var component in components)
-                component.Draw(gameTime, spriteBatch);
+                component.Draw(gameTime, spriteBatch); 
 
-            var size = RecordFont.MeasureString("Best Score - 0");
+            var score = SerializationController.GetBestScore();
+            var size = RecordFont.MeasureString("Best Score - " + score);
 
-            spriteBatch.DrawString(RecordFont, "Best Score - 0", 
+            spriteBatch.DrawString(RecordFont, "Best Score - " + score, 
                 new Vector2(Game1.windowWidth / 2 - size.X / 2, Game1.windowHeight / 2 - size.Y / 2 + 210), 
                 Color.White);
         }
