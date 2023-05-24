@@ -15,6 +15,7 @@ namespace EndlessFight.Controllers
         public static Audio pause;
         public static Audio menu;
         public static Audio loose;
+        public static Audio button;
 
         public static void PlayMusic(Audio audio)
         {

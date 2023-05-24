@@ -82,9 +82,6 @@ namespace EndlessFight.GameStates
             AudioController.getItem = new Audio(0.35f, "getItem", GetItemSound);
             AudioController.getDamage = new Audio(0.35f, "getDamage", GetDamageSound);
             AudioController.enemyShoot = new Audio(0.09f, "enemyDamage", EnemyShootSound);
-            AudioController.pauseSound = new Audio(0.08f, "pause", PauseSound);
-            AudioController.allDestroy = new Audio(0.4f, "allDestroy", AllDestroySound);
-            AudioController.pause = new Audio(0.8f, "pause", PauseSound);
             AudioController.loose = new Audio(0.8f, "loose", LooseSound);
             AudioController.PlayMusic(AudioController.mainTheme);
 
