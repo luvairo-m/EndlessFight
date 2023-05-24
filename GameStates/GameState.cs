@@ -63,6 +63,7 @@ namespace EndlessFight.GameStates
             LivesController.LifeIconTexture = PlayerLifeTexture;
             ScoreController.ScoreFont = ScoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
+            EnemiesController.SetTimer();
 
             AudioController.mainTheme = new Audio(0.15f, "mainTheme", MainThemeSound);
             AudioController.shoot = new Audio(0.15f, "shoot", ShootSound);
