@@ -49,7 +49,7 @@ namespace EndlessFight.GameStates
             };
 
             Globals.StartGamePulsation = new Pulsation((0, 0, 0), BackgroundTexture, 22f);
-            AudioController.menu = new Audio(0.3f, "menu", MenuSound);
+            AudioController.menu = new Audio(0.09f, "menu", MenuSound);
             AudioController.PlayMusic(AudioController.menu);
         }
 

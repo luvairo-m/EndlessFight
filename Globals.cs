@@ -22,6 +22,8 @@ namespace EndlessFight
         public const int PlayerShipSize = 80;
         public const int EnemySpawnOffset = 300;
         public const int PlayerBaseSpeed = 430;
+        public const int GameOverLabelWidth = 550;
+        public const int GameOverLabelHeight = 130;
         public const string SerializationPath = "userdata.json";
         public const float TimeToChengeDifficulty = 2;
         public const float MaxDifficult = 0.7f;

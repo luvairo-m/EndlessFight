@@ -34,7 +34,11 @@ namespace EndlessFight.Controllers
             }
 
             if (Globals.Player.CurrentLifes <= 0)
+            {
+                AudioController.mainTheme.soundEffectInstance.Stop();
+                AudioController.PlayEffect(AudioController.loose);
                 GameState.IsGameOver = true;
+            }
         }
     }
 }

@@ -11,15 +11,13 @@ namespace EndlessFight.GameStates
 {
     public class GameState : State
     {
-        /*
-         * Анимация начала игры
-         * Расширение паузы
-         * Анимация проигрыша
-         */
-
         private Player player;
         private Vector2 playerSpawnPosition = new(Game1.windowWidth / 2 - 40, Game1.windowHeight + 200);
         private Color pauseColor = Color.FromNonPremultiplied(0, 0, 0, 200);
+
+        private string gameOver1 = "R to restart";
+        private string gameOver2 = "Enter to leave";
+        private Vector2 gameOver1Size, gameOver2Size;
 
         #region Game starting animation
         public static bool IsPaused;
@@ -35,7 +33,11 @@ namespace EndlessFight.GameStates
         public GameState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
             : base(game, contentManager, graphics) { }
 
-        public override void LoadContent() => Initialize();
+        public override void LoadContent()
+        {
+            (gameOver1Size, gameOver2Size) = (PauseFont.MeasureString(gameOver1), PauseFont.MeasureString(gameOver2));
+            Initialize();
+        }
 
         public override void Initialize()
         {
@@ -50,8 +52,6 @@ namespace EndlessFight.GameStates
             Globals.Player = player;
             Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture, 3f);
             Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture, 3f);
-            //Globals.HitPulsation = new Pulsation((255, 0, 0), BackgroundTexture);
-            //Globals.HealPulsation = new Pulsation((0, 255, 0), BackgroundTexture);
 
             SetUpEnemies();
 
@@ -146,9 +146,15 @@ namespace EndlessFight.GameStates
 
             if (IsGameOver)
             {
-                AudioController.mainTheme.soundEffectInstance.Stop();
-                AudioController.PlayEffect(AudioController.loose);
-                spriteBatch.Draw(GameOverLabel, new Vector2(0, 0), Color.White);
+                spriteBatch.Draw(GameOverLabel,
+                    new Rectangle(Game1.windowWidth / 2 - Globals.GameOverLabelWidth / 2,
+                    Game1.windowHeight / 2 - Globals.GameOverLabelHeight,
+                    Globals.GameOverLabelWidth, Globals.GameOverLabelHeight),
+                    Color.White);
+                spriteBatch.DrawString(PauseFont, gameOver1,
+                    new(Game1.windowWidth / 2 - gameOver1Size.X / 2, Game1.windowHeight / 2), Color.White);
+                spriteBatch.DrawString(PauseFont, gameOver2,
+                    new(Game1.windowWidth / 2 - gameOver2Size.X / 2, Game1.windowHeight / 2 + 45), Color.White);
             }
         }
 
@@ -206,25 +212,36 @@ namespace EndlessFight.GameStates
                         (isEscapeUp, IsPaused) = (false, false);
                     }
                 }
+            } else
+            {
+                if (keyboardState.IsKeyDown(Keys.R))
+                {
+                    OnExit();
+                    Initialize();
+                } 
+                if (keyboardState.IsKeyDown(Keys.Enter))
+                    Globals.MainGame.ChangeState();
             }
         }
 
         public override void OnExit()
         {
+            IsPaused = false;
+            IsGameOver = false;
+            isEscapeUp = false;
             handleMovement = false;
             showCountdown = false;
             countDownFrequency = 1f;
             countDownBuffer = 1f;
             countDownCounter = 3;
-            Background.IsMaxDifficulty = false;
             isEscapeUp = false;
-            //Globals.MainGame.ChangeState();
+            Background.IsMaxDifficulty = false;
+            SerializationController.MakeSerialization();
             EnemiesController.CurrentEnemies.Clear();
             BulletsController.CurrentBullets.Clear();
             ExplosionContoller.CurrentExplosions.Clear();
             BonusesController.CurrentBonuses.Clear();
             ScoreController.Score = 0;
-            SerializationController.MakeSerialization();
         }
 
         private void SetUpEnemies()
