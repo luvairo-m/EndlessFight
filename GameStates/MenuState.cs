@@ -17,8 +17,6 @@ namespace EndlessFight.GameStates
         private Vector2 titleSize;
 
         private float scaling = 1f;
-        private float scalingInterval = 1f;
-
         private bool up = true;
         private bool down = false;
 

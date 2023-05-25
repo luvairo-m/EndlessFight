@@ -18,14 +18,15 @@ namespace EndlessFight.Models
         private Vector2 position;
         private int speed;
         private bool isAlive = true;
+        private bool isShooting;
 
         private Rectangle sourceRectangle;
         private readonly SpriteAnimation exhaustAnimation;
         private readonly Texture2D shipTexture;
-
         private readonly Texture2D blasterTexture;
 
-        private bool isShooting;
+        private float shootingInterval = 0.2f;
+        private float shootingIntervalBuffer = 0.2f;
 
         public Player(Vector2 spawnPosition, int speed, Texture2D shipTexture,
             Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
@@ -100,8 +101,11 @@ namespace EndlessFight.Models
 
         private void DoBlasterShoot()
         {
-            if (!isShooting)
+            shootingInterval -= Globals.ElapsedSeconds;
+
+            if (shootingInterval <= 0)
             {
+                shootingInterval = shootingIntervalBuffer;
                 AudioController.PlayEffect(AudioController.shoot);
 
                 float step = (float)Globals.PlayerShipSize / (ShootingMultiplier * 2);
