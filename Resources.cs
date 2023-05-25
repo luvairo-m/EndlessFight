@@ -40,6 +40,7 @@ namespace EndlessFight
         public static SpriteFont PauseFont;
         public static SpriteFont CountDownFont;
         public static SpriteFont InGameScoreFont;
+        public static SpriteFont BestScoreFont;
         #endregion
 
         #region Bonuses
@@ -114,6 +115,7 @@ namespace EndlessFight
             TitleFont = contentManager.Load<SpriteFont>("Fonts/name-game-font");
             RecordFont = contentManager.Load<SpriteFont>("Fonts/score-font");
             InGameScoreFont = contentManager.Load<SpriteFont>("Fonts/ingame-score-font");
+            BestScoreFont = contentManager.Load<SpriteFont>("Fonts/best-score-font");
         }
 
         private void InitializeSounds()

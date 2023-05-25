@@ -217,6 +217,13 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/lips.png
 
+#begin Fonts/best-score-font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/best-score-font.spritefont
+
 #begin Fonts/countdown-font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

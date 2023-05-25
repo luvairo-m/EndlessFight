@@ -15,9 +15,15 @@ namespace EndlessFight.GameStates
         private List<Component> components;
         private string title = "Endless fight";
         private Vector2 titleSize;
-        
-        public MenuState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics) 
-            : base(game, contentManager, graphics) { } 
+
+        private float scaling = 1f;
+        private float scalingInterval = 1f;
+
+        private bool up = true;
+        private bool down = false;
+
+        public MenuState(Game1 game, ContentManager contentManager, GraphicsDeviceManager graphics)
+            : base(game, contentManager, graphics) { }
 
         public override void LoadContent()
         {
@@ -28,8 +34,8 @@ namespace EndlessFight.GameStates
         public override void Initialize()
         {
             var loadGameButton = new Button(StartButtonTexture)
-            { 
-                Position = new Vector2(Game1.windowWidth / 2 - StartButtonTexture.Width / 2, 
+            {
+                Position = new Vector2(Game1.windowWidth / 2 - StartButtonTexture.Width / 2,
                                         Game1.windowHeight / 2 - StartButtonTexture.Height - 20),
             };
 
@@ -63,26 +69,41 @@ namespace EndlessFight.GameStates
                 new Vector2(Game1.windowWidth / 2 - titleSize.X / 2, 174), Color.White);
 
             foreach (var component in components)
-                component.Draw(gameTime, spriteBatch); 
+                component.Draw(gameTime, spriteBatch);
 
             var score = SerializationController.GetBestScore();
             var size = RecordFont.MeasureString("Best Score - " + score);
 
-            spriteBatch.DrawString(RecordFont, "Best Score - " + score, 
-                new Vector2(Game1.windowWidth / 2 - size.X / 2, Game1.windowHeight / 2 - size.Y / 2 + 210), 
-                Color.White);
+            spriteBatch.DrawString(RecordFont, "Best Score - " + score,
+                new Vector2(Game1.windowWidth / 2 - size.X * scaling / 2,
+                Game1.windowHeight / 2 - size.Y * scaling / 2 + 210),
+                Color.Gold, 0f, new(0, 0), scaling, SpriteEffects.None, 0);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Globals.StartGamePulsation.alphaValue >= 218)
+            var delta = Globals.ElapsedSeconds;
+
+            if (scaling <= 5 && up)
             {
-                Globals.MainGame.ChangeState();
+                scaling += delta / 7;
+                if (scaling >= 1.2)
+                    (up, down) = (false, true);
             }
+            else if (scaling >= 0 && down)
+            {
+                scaling -= delta / 7;
+                if (scaling <= 1)
+                    (up, down) = (true, false);
+            }
+
+            if (Globals.StartGamePulsation.alphaValue >= 218)
+                Globals.MainGame.ChangeState();
+
             components.ForEach(c => c.Update(gameTime));
         }
 
-        public override void OnExit() {  }
+        public override void OnExit() { }
 
         private void OnStartButtonClicked(object sender, EventArgs e)
         {

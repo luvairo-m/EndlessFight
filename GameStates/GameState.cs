@@ -71,8 +71,6 @@ namespace EndlessFight.GameStates
                 { typeof(Mult3Bonus), new TextureDescription(Mult3BonusTexture, 15) },
             };
 
-            LivesController.LifeIconTexture = PlayerLifeTexture;
-            ScoreController.ScoreFont = InGameScoreFont;
             ExplosionContoller.ExplosionTextures = explosionTextures;
             EnemiesController.SetTimer();
 
@@ -234,11 +232,13 @@ namespace EndlessFight.GameStates
             isEscapeUp = false;
             Background.IsMaxDifficulty = false;
             SerializationController.MakeSerialization();
+            SerializationController.GetBestScore();
             EnemiesController.CurrentEnemies.Clear();
             BulletsController.CurrentBullets.Clear();
             ExplosionContoller.CurrentExplosions.Clear();
             BonusesController.CurrentBonuses.Clear();
             ScoreController.Score = 0;
+            ScoreController.BestScore = SerializationController.BestScore;
         }
 
         private void SetUpEnemies()
