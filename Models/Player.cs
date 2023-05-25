@@ -25,9 +25,6 @@ namespace EndlessFight.Models
         private readonly Texture2D shipTexture;
         private readonly Texture2D blasterTexture;
 
-        private float shootingInterval = 0.2f;
-        private float shootingIntervalBuffer = 0.2f;
-
         public Player(Vector2 spawnPosition, int speed, Texture2D shipTexture,
             Texture2D blasterTexture, SpriteAnimation exhaustAnimation)
         {
@@ -101,11 +98,8 @@ namespace EndlessFight.Models
 
         private void DoBlasterShoot()
         {
-            shootingInterval -= Globals.ElapsedSeconds;
-
-            if (shootingInterval <= 0)
+            if (!isShooting)
             {
-                shootingInterval = shootingIntervalBuffer;
                 AudioController.PlayEffect(AudioController.shoot);
 
                 float step = (float)Globals.PlayerShipSize / (ShootingMultiplier * 2);
@@ -120,8 +114,8 @@ namespace EndlessFight.Models
                         new(placement - blasterTexture.Width * Globals.BlasterScale / 2, Position.Y),
                         700, new(0, -1), new(blasterTexture, 1, 1) { Scale = Globals.BlasterScale }, BulletOwner.Player));
                 }
-
                 isShooting = true;
+                return;
             }
         }
     }

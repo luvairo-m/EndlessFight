@@ -3,7 +3,7 @@
 namespace EndlessFight.Controllers
 {
     public enum Direction { Left, Right, Up, Down, None }
-    public enum BulletType { Rocket, Blaster, None }
+    public enum BulletType { Blaster, None }
 
     public class InputController
     {
@@ -27,7 +27,6 @@ namespace EndlessFight.Controllers
         {
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Space)) return BulletType.Blaster;
-            else if (keyboardState.IsKeyDown(Keys.R)) return BulletType.Rocket;
             else return BulletType.None;
         }
     }
