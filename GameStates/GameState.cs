@@ -74,13 +74,13 @@ namespace EndlessFight.GameStates
             ExplosionContoller.ExplosionTextures = explosionTextures;
             EnemiesController.SetTimer();
 
-            AudioController.mainTheme = new Audio(0.15f, "mainTheme", MainThemeSound);
-            AudioController.shoot = new Audio(0.15f, "shoot", ShootSound);
-            AudioController.hit = new Audio(0.15f, "hit", HitSound);
-            AudioController.getItem = new Audio(0.35f, "getItem", GetItemSound);
-            AudioController.getDamage = new Audio(0.35f, "getDamage", GetDamageSound);
-            AudioController.enemyShoot = new Audio(0.09f, "enemyDamage", EnemyShootSound);
-            AudioController.loose = new Audio(0.8f, "loose", LooseSound);
+            AudioController.mainTheme = new Audio(0.05f, "mainTheme", MainThemeSound);
+            AudioController.shoot = new Audio(0.05f, "shoot", ShootSound);
+            AudioController.hit = new Audio(0.05f, "hit", HitSound);
+            AudioController.getItem = new Audio(0.1f, "getItem", GetItemSound);
+            AudioController.getDamage = new Audio(0.1f, "getDamage", GetDamageSound);
+            AudioController.enemyShoot = new Audio(0.01f, "enemyDamage", EnemyShootSound);
+            AudioController.loose = new Audio(0.4f, "loose", LooseSound);
             AudioController.PlayMusic(AudioController.mainTheme);
 
             Globals.EnemyShoot = EnemyShootSound;
